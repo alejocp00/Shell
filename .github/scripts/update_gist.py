@@ -5,7 +5,7 @@ from github import Github
 
 def main():
     token = os.environ["GITHUB_PAT"]
-    gist_id = "YOUR_GIST_ID"
+    gist_id = "d947c38bedaa9d89851a5a2f79a444a9"
 
     github = Github(token)
     repo = github.get_repo(os.environ["GITHUB_REPOSITORY"])
