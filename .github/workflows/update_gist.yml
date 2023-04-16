@@ -1,0 +1,25 @@
+name: Update Gist
+
+on:
+  issues:
+    types: [closed]
+
+jobs:
+  update_gist:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install PyGithub
+
+      - name: Run script
+        env:
+          GITHUB_PAT: ${{ secrets.TOKEN }}
+        run: python .github/scripts/update_gist.py
