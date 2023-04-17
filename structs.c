@@ -1,0 +1,5 @@
+enum bool
+{
+    False,
+    True
+};

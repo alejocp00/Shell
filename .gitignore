@@ -75,3 +75,13 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+
+.vscode/*
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+main
