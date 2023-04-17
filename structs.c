@@ -1,5 +1,0 @@
-enum bool
-{
-    False,
-    True
-};
