@@ -1,5 +1,5 @@
-enum bool
+enum Bool
 {
-    False,
-    True
+    false,
+    true
 };
