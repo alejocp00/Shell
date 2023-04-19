@@ -18,7 +18,7 @@
 
 static char current_path[PATH_MAX];
 static char entry[ENTRY_MAX];
-static enum bool not_set = True;
+static enum Bool not_set = true;
 
 void init_shell()
 {
@@ -30,13 +30,13 @@ void PrintPrompt()
     printf("%s%s:%s%s%s$ ", ANSI_COLOR_GREEN, SHELL_NAME, ANSI_COLOR_BLUE, current_path, ANSI_COLOR_RESET);
 }
 
-int main()
+int Main()
 {
     if (not_set)
     {
         init_shell();
         PrintPrompt();
-        not_set = True;
+        not_set = false;
     }
     fgets(entry, ENTRY_MAX, stdin);
 }
