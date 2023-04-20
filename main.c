@@ -30,7 +30,7 @@ void PrintPrompt()
     printf("%s%s:%s%s%s$ ", ANSI_COLOR_GREEN, SHELL_NAME, ANSI_COLOR_BLUE, current_path, ANSI_COLOR_RESET);
 }
 
-int Main()
+int main()
 {
     if (not_set)
     {
