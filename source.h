@@ -9,11 +9,13 @@ struct source
     long position; //position of the actual char in the source text
 };
 
+typedef struct source Source;
+
 
 /*Functions*/
-char point_next_char(source nsource); //It returns the next char and points to the next char
-char get_char(source source); //It returns the next char but it keeps poiting at the actual char
-void skip_blanks(source source); //Skip white spaces, tabs.
-void unget_char(source source); //unget the actual char to the input source
+char point_next_char(Source source); //It returns the next char and points to the next char
+char get_char(Source source); //It returns the next char but it keeps poiting at the actual char
+void skip_blanks(Source source); //Skip white spaces, tabs.
+void unget_char(Source source); //unget the actual char to the input source
 
 #endif
