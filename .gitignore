@@ -85,3 +85,4 @@ _deps
 *.vsix
 
 main
+shell
