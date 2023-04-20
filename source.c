@@ -48,13 +48,14 @@ void unget_char(Source *source)
     source->position--;
 }
 
+/* Question: En esta función, cuando se haga skip_blanks una vez, no se quedaría hasta el char que le sigue al útimo espacio en blanco? Todo de una. Como tendría sentido para mí es de uno en uno. */
 void skip_blanks(Source *source)
 {
     if(!source || !source->in_text) return; /*Verify if there is a source value or a in_text value*/
     
     char aux;
 
-    while((aux = get_char(source)) != EOF && (aux == ' ' || aux == ' \t')) 
+    while((aux = get_char(source)) != EOF && (aux == ' ' || aux == '\t')) 
     {
         point_next_char(source);
     }
