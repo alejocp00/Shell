@@ -13,8 +13,9 @@ char point_next_char(Source *source)
     {
         source->position = -1;
     }
-    if(source->position == source->size) /*Verify if it's the end of the source text*/
+    if(source->position >= source->size) /*Verify if it's the end of the source text*/
     {
+        source->position = source->size;
         return EOF;
     }
     source->position++;
@@ -48,7 +49,6 @@ void unget_char(Source *source)
     source->position--;
 }
 
-/* Question: En esta función, cuando se haga skip_blanks una vez, no se quedaría hasta el char que le sigue al útimo espacio en blanco? Todo de una. Como tendría sentido para mí es de uno en uno. */
 void skip_blanks(Source *source)
 {
     if(!source || !source->in_text) return; /*Verify if there is a source value or a in_text value*/
