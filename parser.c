@@ -1,19 +1,22 @@
 #include <errno.h>
-#include "source.h"
+#include "parser.h"
 
 char point_next_char(Source *source)
 {
-    if(!source || !source->in_text) /*Verify if there is a source value or in_text value*/
+    /*Verify if there is a source value or in_text value*/
+    if(!source || !source->in_text) 
     {
         errno = ENODATA; 
         return 0;
     }
     
-    if (source->position == INITIAL_S_POSITION) /*Verify if it has been initializaded*/
+    /*Verify if it has been initializated*/
+    if (source->position == INITIAL_S_POSITION)
     {
         source->position = -1;
     }
-    if(source->position >= source->size) /*Verify if it's the end of the source text*/
+    /*Verify if it's the end of the source text*/
+    if(source->position >= source->size)
     {
         source->position = source->size;
         return EOF;
@@ -24,18 +27,22 @@ char point_next_char(Source *source)
 
 char get_char(Source *source)
 {
-    if(!source || !source->in_text) /*Verify if there is a source value or a in_text value */
+    /*Verify if there is a source value or a in_text value*/
+    if(!source || !source->in_text)
     {
         return 0;
     }
-    if(source->position == INITIAL_S_POSITION) /*Verify if it has been initializaded*/
+    /*Verify is it has been initializated*/
+    if(source->position == INITIAL_S_POSITION)
     {
         source->position = -1;
     }
 
-    long pos = source->position + 1; /*position of the next char*/
-      
-    if(pos == source->size) /*verify if it's the end of the file*/
+    /*position of the next char*/
+    long pos = source->position + 1; 
+    
+    /*Verify if it's the end of the file*/
+    if(pos == source->size) 
     {
         return EOF;
     }
@@ -51,7 +58,8 @@ void unget_char(Source *source)
 
 void skip_blanks(Source *source)
 {
-    if(!source || !source->in_text) return; /*Verify if there is a source value or a in_text value*/
+    /*Verify if there is a source value or a in_text value*/
+    if(!source || !source->in_text) return; 
     
     char aux;
 
