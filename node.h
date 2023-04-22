@@ -45,6 +45,7 @@
         struct node *previous_sibling;
     };
 
+
     /*Defining an alias for struct node*/
     typedef struct node Node;
 

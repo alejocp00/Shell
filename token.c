@@ -64,7 +64,7 @@ Token *create_token(char *text)
     return token;
 }
 
-/* Question: No estoy segura si hay que liberar tambien source. Yo lo habia puesto pero en el tuto no esta.*/
+
 void free_token(Token *token)
 {
     if(token->text)
