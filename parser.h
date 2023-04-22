@@ -15,7 +15,7 @@ struct source
     long position; 
 };
 
-/*defining alias for struct source*/
+/*defining an alias for struct source*/
 typedef struct source Source;
 
 /*It returns the next char and points to the next char*/
@@ -60,14 +60,13 @@ void free_T(Token token);
 #ifndef NODE_H
 #define NODE_H
 
-struct node
-{
+
     /*Defining the type of node (if it's a command or a var)*/
     enum node_type
     {
         N_COMAND,
         N_VAR,
-    }
+    };
 
     /*defining the type of var*/
     enum val_type
@@ -80,9 +79,8 @@ struct node
         V_DOUBLE,
         V_CHAR,
         V_STR,
-    }
+    };
 
-    /* Fix: Revisar bien esto*/
     union value
     {
         long sint;
@@ -104,14 +102,15 @@ struct node
         struct node *first_child;
         struct node *next_sibling;
         struct node *previous_sibling;
-    }
+    };
 
+    /*Defining an alias for struct node*/
     typedef struct node Node;
 
     Node *new_node(enum node_type type);
     void add_child(Node *parent, Node *child);
     void free_node(Node *node);
-    void set_node_val(NOde *node, char *val);
-}
+    void set_node_val(Node *node, char *val);
+
 
 #endif
