@@ -1,6 +1,10 @@
 #include <errno.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include "parser.h"
 
+#pragma region Source
 char point_next_char(Source *source)
 {
     /*Verify if there is a source value or in_text value*/
@@ -69,4 +73,73 @@ void skip_blanks(Source *source)
     }
 }
 
+#pragma endregion
+
+#pragma region Token 
+
+/*Indicates the end of the input*/
+Token EOF_token = {
+    .text_size = 0,
+};
+
+char *buffer = NULL;
+int buf_size = 0;
+int buf_index = -1;
+
+/*Auxiliar Functions*/
+
+void add_to_buffer(char character)
+{   
+    /*temporal char for adjusting the size*/
+    char *aux;
+
+    /*Verify if after the increment it gets at the final of the buffer*/
+    if(++buf_index >= buf_size)
+    {
+        aux = realloc(buffer, buf_size*2);
+        /*Verify if it was not posible to realloc*/
+        if(!aux)
+        {
+            /*Throw no memory error*/
+            errno = ENOMEM;
+            return;
+        }
+    }
+
+    buffer = aux;
+    buffer[buf_index] = character;
+    buf_size*=2;
+}
+
+Token *create_token(char *text)
+{
+    /*Reserve the memory that it'll be necesary for the token*/
+    Token *token = malloc(sizeof(Token));
+
+    if(!token) return NULL;
+
+    /*Initialazing the structure with 0*/
+    memset(token, 0, sizeof(Token));
+    token->text_size = strlen(text);
+
+    /*This char will contain the text, the size is text_size+1 because we need to save /0 wich indicates the end of the string*/
+    char *n_text = malloc(token->text_size+1);
+
+    if(!n_text)
+    {
+        free(token);
+        return NULL;
+    }
+
+    /*Copying the string*/
+    strcpy(n_text, text);
+    token->text = n_text;
+
+    return token;
+}
+
+
+
+
+#pragma endregion
 
