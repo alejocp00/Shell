@@ -148,6 +148,78 @@ void free_token(Token *token)
     free(token);
 }
 
+Token *tokenize(Source *source)
+{   
+    /*Verify if there is a source, in_text and a size value*/
+    if(!source || !source->in_text || !source->size)
+    {
+        errno = ENODATA;
+        return &EOF_token;
+    }
+
+    /*Verify if there is a buffer value*/
+    if(!buffer)
+    {
+        buf_size = 1024;
+        buffer = malloc(buf_size);
+
+        /*Verify if it was possible to reserve memory*/
+        if(!buffer)
+        {
+            errno = ENOMEM;
+            return &EOF_token;
+        }
+    }
+
+    buf_index = 0;
+    buffer[0] = '\0';
+
+    /*next will be an aux char that contains the next character*/
+    char next = point_next_char(source);
+
+    int end = 0;
+
+    /* Fix: Necesito revisar esto bien cuando tenga cabeza para leer el codigo*/
+    if(next == 0 || next == EOF) return &EOF_token;
+
+    do
+    {
+        switch(next)
+        {
+            case(' '):
+            case('\t'):
+                if(buf_index > 0) end = 1;
+                break;
+            case('\n'):
+                if(buf_index > 0) unget_char(source);
+                else add_to_buffer(next);
+                end = 1;
+                break;
+            default:
+                add_to_buffer(next);
+                break;
+        }
+        if(end) break;
+    } while(next = point_next_char(source) != EOF);
+
+    if(buf_index == 0) return &EOF_token;
+    if(buf_index >= buf_size) buf_index--;
+
+    buffer[buf_index] = '\0';
+
+    Token *token = create_token(buffer);
+
+    if(!token) return &EOF_token;
+
+    token->source = source;
+    return token;
+
+
+
+
+
+
+}
 
 
 #pragma endregion

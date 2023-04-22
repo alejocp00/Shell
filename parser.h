@@ -51,8 +51,8 @@ typedef struct token Token;
 extern Token EOF_token;
 
 /*This will retrieve next input token*/
-Token *tokenize(Source source);
+Token *tokenize(Source *source);
 
 /*Liberate the memory used by a Token*/
-void *free_T(Token token);
+void free_T(Token token);
 #endif
