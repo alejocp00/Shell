@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "structs.c"
+#include "structs.h"
 
 #define ANSI_COLOR_RED "\x1b[31m"
 #define ANSI_COLOR_GREEN "\x1b[32m"
@@ -18,14 +18,14 @@
 
 static char current_path[PATH_MAX];
 static char entry[ENTRY_MAX];
-static enum Bool not_set = true;
+static Bool not_set = true;
 
 void init_shell()
 {
     getcwd(current_path, sizeof(current_path));
 }
 
-void PrintPrompt()
+void print_prompt()
 {
     printf("%s%s:%s%s%s$ ", ANSI_COLOR_GREEN, SHELL_NAME, ANSI_COLOR_BLUE, current_path, ANSI_COLOR_RESET);
 }
@@ -35,7 +35,7 @@ int main()
     if (not_set)
     {
         init_shell();
-        PrintPrompt();
+        print_prompt();
         not_set = false;
     }
     fgets(entry, ENTRY_MAX, stdin);
