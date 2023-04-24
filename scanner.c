@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include "scanner.h"
+#include "structs.h"
 
 /*Indicates the end of the input*/
 Token EOF_token = {
@@ -19,7 +20,7 @@ void add_to_buffer(char character)
     char *aux;
 
     /*Verify if after the increment it gets at the final of the buffer*/
-    if (++buf_index >= buf_size)
+    if (buf_index + 1 >= buf_size)
     {
         aux = realloc(buffer, buf_size * 2);
         /*Verify if it was not posible to realloc*/
@@ -32,7 +33,7 @@ void add_to_buffer(char character)
     }
 
     buffer = aux;
-    buffer[buf_index] = character;
+    buffer[buf_index++] = character;
     buf_size *= 2;
 }
 
@@ -100,29 +101,29 @@ Token *tokenize(Source *source)
     buffer[0] = '\0';
 
     /*next will be an aux char that contains the next character*/
-    char next = point_next_char(source);
+    char next = get_next_char(source);
 
-    int end = 0;
+    bool end = false;
 
-    /* Fix: Necesito revisar esto bien cuando tenga cabeza para leer el código*/
-    if (next == 0 || next == EOF)
+    if (next == ERRCHAR || next == EOF)
         return &EOF_token;
 
     do
     {
+        /*The deciding what to do*/
         switch (next)
         {
         case (' '):
         case ('\t'):
             if (buf_index > 0)
-                end = 1;
+                end = true;
             break;
         case ('\n'):
             if (buf_index > 0)
                 unget_char(source);
             else
                 add_to_buffer(next);
-            end = 1;
+            end = true;
             break;
         default:
             add_to_buffer(next);
@@ -130,12 +131,12 @@ Token *tokenize(Source *source)
         }
         if (end)
             break;
-    } while (next = point_next_char(source) != EOF);
+    } while (next = get_next_char(source) != EOF);
 
     if (buf_index == 0)
         return &EOF_token;
     if (buf_index >= buf_size)
-        buf_index--;
+        buf_index = buf_size - 1;
 
     buffer[buf_index] = '\0';
 

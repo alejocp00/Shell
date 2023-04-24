@@ -17,10 +17,10 @@ typedef struct source
 } Source;
 
 /*It returns the next char and points to the next char*/
-char point_next_char(Source *source);
+char get_next_char(Source *source);
 
 /*It returns the next char but it keeps pointing at the actual char*/
-char get_char(Source *source);
+char peek_next_char(Source *source);
 
 /*unget the actual char to the input source*/
 void unget_char(Source *source);
