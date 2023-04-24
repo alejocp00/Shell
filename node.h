@@ -4,8 +4,8 @@
 /*Defining the type of node (if it's a command or a var)*/
 typedef enum node_type
 {
-    N_COMAND,
-    N_VAR,
+    NODE_COMMAND,
+    NODE_VAR,
 } Node_Type;
 
 /*defining the type of var*/
