@@ -15,6 +15,6 @@ typedef struct builtins
 extern Builtins builtins[];
 
 /*Amount of builtins*/
-int builtings_count;
+int builtins_count;
 
 #endif
