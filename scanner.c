@@ -121,6 +121,11 @@ Token *tokenize(Source *source)
             break;
         /*End of line*/
         case ('#'):
+            unget_char(source);
+            if (buf_index == 0)
+                return &EOF_token;
+            end = true;
+            break;
         case ('\n'):
             if (buf_index > 0)
                 unget_char(source);
