@@ -16,16 +16,34 @@ typedef struct source
     long position;
 } Source;
 
-/*It returns the next char and points to the next char*/
-char point_next_char(Source *source);
+/**
+ * @brief Get the next char from the input source
+ *
+ * @param source The input source
+ * @return char The next char
+ */
+char get_next_char(Source *source);
 
-/*It returns the next char but it keeps pointing at the actual char*/
-char get_char(Source *source);
+/**
+ * @brief Get the next char from the input source without moving the position
+ *
+ * @param source The input source
+ * @return char The next char
+ */
+char peek_next_char(Source *source);
 
-/*unget the actual char to the input source*/
+/**
+ * @brief Unget the last char from the input source
+ *
+ * @param source The input source
+ */
 void unget_char(Source *source);
 
-/*Skip white spaces and tabs*/
+/**
+ * @brief Skip the blanks from the input source
+ *
+ * @param source The input source
+ */
 void skip_blanks(Source *source);
 
 #endif

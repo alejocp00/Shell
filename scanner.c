@@ -1,6 +1,8 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include "scanner.h"
+#include "structs.h"
 
 /*Indicates the end of the input*/
 Token EOF_token = {
@@ -15,13 +17,14 @@ int buf_index = -1;
 
 void add_to_buffer(char character)
 {
-    /*temporal char for adjusting the size*/
-    char *aux;
+    buffer[buf_index++] = character;
 
     /*Verify if after the increment it gets at the final of the buffer*/
-    if (++buf_index >= buf_size)
+    if (buf_index >= buf_size)
     {
-        aux = realloc(buffer, buf_size * 2);
+        /*temporal char for adjusting the size*/
+        char *aux = realloc(buffer, buf_size * 2);
+
         /*Verify if it was not posible to realloc*/
         if (!aux)
         {
@@ -29,11 +32,9 @@ void add_to_buffer(char character)
             errno = ENOMEM;
             return;
         }
+        buffer = aux;
+        buf_size *= 2;
     }
-
-    buffer = aux;
-    buffer[buf_index] = character;
-    buf_size *= 2;
 }
 
 Token *create_token(char *text)
@@ -100,29 +101,32 @@ Token *tokenize(Source *source)
     buffer[0] = '\0';
 
     /*next will be an aux char that contains the next character*/
-    char next = point_next_char(source);
+    char next = get_next_char(source);
 
-    int end = 0;
+    bool end = false;
 
-    /* Fix: Necesito revisar esto bien cuando tenga cabeza para leer el código*/
-    if (next == 0 || next == EOF)
+    if (next == ERRCHAR || next == EOF)
         return &EOF_token;
 
     do
     {
+        /*The deciding what to do*/
         switch (next)
         {
+        /*Spaces*/
         case (' '):
         case ('\t'):
             if (buf_index > 0)
-                end = 1;
+                end = true;
             break;
+        /*End of line*/
+        case ('#'):
         case ('\n'):
             if (buf_index > 0)
                 unget_char(source);
             else
                 add_to_buffer(next);
-            end = 1;
+            end = true;
             break;
         default:
             add_to_buffer(next);
@@ -130,12 +134,13 @@ Token *tokenize(Source *source)
         }
         if (end)
             break;
-    } while (next = point_next_char(source) != EOF);
+        next = get_next_char(source);
+    } while (next != EOF);
 
     if (buf_index == 0)
         return &EOF_token;
     if (buf_index >= buf_size)
-        buf_index--;
+        buf_index = buf_size - 1;
 
     buffer[buf_index] = '\0';
 

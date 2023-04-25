@@ -1,10 +1,10 @@
 #ifndef STRUCTS_H
 #define STRUCTS_H
 
-typedef enum
+typedef enum Bool
 {
     false,
     true
-} Bool;
+} bool;
 
 #endif

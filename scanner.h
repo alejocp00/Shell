@@ -13,10 +13,19 @@ typedef struct token
 /*Extern token that indicates EOF*/
 extern Token EOF_token;
 
-/*This will retrieve next input token*/
+/**
+ * @brief This will retrieve next input token
+ *
+ * @param source The source of the input
+ * @return Token* The next token
+ */
 Token *tokenize(Source *source);
 
-/*Liberate the memory used by a Token*/
+/**
+ * @brief Liberate the memory used by a Token
+ *
+ * @param token The token to free
+ */
 void free_token(Token *token);
 
 #endif
