@@ -1,6 +1,5 @@
 #include <errno.h>
 #include <stdlib.h>
-#include "source.h"
 #include "scanner.h"
 
 char get_next_char(Source *source)
@@ -18,13 +17,13 @@ char get_next_char(Source *source)
         source->position = -1;
     }
     /*Verify if it's the end of the source text*/
-    if (source->position >= source->size)
+    if (++source->position >= source->size)
     {
         source->position = source->size;
         return EOF;
     }
 
-    return source->in_text[source->position++];
+    return source->in_text[source->position];
 }
 
 char peek_next_char(Source *source)

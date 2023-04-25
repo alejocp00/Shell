@@ -49,7 +49,7 @@ void add_child(Node *parent, Node *child)
     parent->c_children++;
 }
 
-void set_node_val_str(Node *node, char *val)
+void set_node_val(Node *node, char *val)
 {
     /*setting the type of value*/
     node->val_type = V_STR;
@@ -73,7 +73,7 @@ void set_node_val_str(Node *node, char *val)
     }
 }
 
-void free_node_tree(Node *node)
+void free_node(Node *node)
 {
 
     if (!node)
@@ -86,7 +86,7 @@ void free_node_tree(Node *node)
     while (child)
     {
         Node *next = child->next_sibling;
-        free_node_tree(child);
+        free_node(child);
         child = next;
     }
 

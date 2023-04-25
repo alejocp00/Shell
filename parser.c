@@ -1,12 +1,10 @@
 #include <unistd.h>
-#include "shell.h"
 #include "parser.h"
-#include "scanner.h"
-#include "node.h"
-#include "source.h"
 
 Node *parse_simple_command(Token *token)
 {
+
+    /*Checking if input is not corrupt*/
     if (!token)
     {
         return NULL;
@@ -23,20 +21,25 @@ Node *parse_simple_command(Token *token)
 
     do
     {
-        if (token->text[0] == '\n')
+        /*If the node stars whit an \n, it's the end of the token*/
+        if (token->text[0] == '\n' || token->text[0] == '#')
         {
             free_token(token);
             break;
         }
+
+        /*Creating the new node*/
         Node *word = new_node(NODE_VAR);
         if (!word)
         {
-            free_node_tree(cmd);
+            free_node(cmd);
             free_token(token);
             return NULL;
         }
-        set_node_val_str(word, token->text);
-        add_child_node(cmd, word);
+
+        /*Setting the value of the node*/
+        set_node_val(word, token->text);
+        add_child(cmd, word);
         free_token(token);
     } while ((token = tokenize(src)) != &EOF_token);
     return cmd;

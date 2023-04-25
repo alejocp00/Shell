@@ -1,5 +1,6 @@
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include "scanner.h"
 #include "structs.h"
 
@@ -16,13 +17,14 @@ int buf_index = -1;
 
 void add_to_buffer(char character)
 {
-    /*temporal char for adjusting the size*/
-    char *aux;
+    buffer[buf_index++] = character;
 
     /*Verify if after the increment it gets at the final of the buffer*/
-    if (buf_index + 1 >= buf_size)
+    if (buf_index >= buf_size)
     {
-        aux = realloc(buffer, buf_size * 2);
+        /*temporal char for adjusting the size*/
+        char *aux = realloc(buffer, buf_size * 2);
+
         /*Verify if it was not posible to realloc*/
         if (!aux)
         {
@@ -30,11 +32,9 @@ void add_to_buffer(char character)
             errno = ENOMEM;
             return;
         }
+        buffer = aux;
+        buf_size *= 2;
     }
-
-    buffer = aux;
-    buffer[buf_index++] = character;
-    buf_size *= 2;
 }
 
 Token *create_token(char *text)
@@ -113,11 +113,14 @@ Token *tokenize(Source *source)
         /*The deciding what to do*/
         switch (next)
         {
+        /*Spaces*/
         case (' '):
         case ('\t'):
             if (buf_index > 0)
                 end = true;
             break;
+        /*End of line*/
+        case ('#'):
         case ('\n'):
             if (buf_index > 0)
                 unget_char(source);
@@ -131,7 +134,8 @@ Token *tokenize(Source *source)
         }
         if (end)
             break;
-    } while (next = get_next_char(source) != EOF);
+        next = get_next_char(source);
+    } while (next != EOF);
 
     if (buf_index == 0)
         return &EOF_token;

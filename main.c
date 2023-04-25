@@ -4,39 +4,39 @@
 #include <stdlib.h>
 #include <string.h>
 #include "structs.h"
+#include "shell.h"
 
-#define ANSI_COLOR_RED "\x1b[31m"
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_YELLOW "\x1b[33m"
-#define ANSI_COLOR_BLUE "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN "\x1b[36m"
-#define ANSI_COLOR_RESET "\x1b[0m"
-#define SHELL_NAME "MyShell"
-#define PATH_MAX 4096
-#define ENTRY_MAX 2097152
+char *current_path = NULL;
 
-static char current_path[PATH_MAX];
-static char entry[ENTRY_MAX];
-static Bool not_set = true;
-
-void init_shell()
+int main(int argc, char **argv)
 {
-    getcwd(current_path, sizeof(current_path));
-}
-
-void print_prompt()
-{
-    printf("%s%s:%s%s%s$ ", ANSI_COLOR_GREEN, SHELL_NAME, ANSI_COLOR_BLUE, current_path, ANSI_COLOR_RESET);
-}
-
-int main()
-{
-    if (not_set)
+    current_path = getcwd(current_path, 1024);
+    char *cmd;
+    do
     {
-        init_shell();
         print_prompt();
-        not_set = false;
-    }
-    fgets(entry, ENTRY_MAX, stdin);
+
+        /*READ*/
+        cmd = read_cmd();
+        if (!cmd)
+        {
+            exit(EXIT_SUCCESS);
+        }
+        if (cmd[0] == '\0' || strcmp(cmd, "\n") == 0)
+        {
+            free(cmd);
+            continue;
+        }
+
+        /*EVAL-PRINT*/
+        Source src;
+        src.in_text = cmd;
+        src.size = strlen(cmd);
+        src.position = INIT_SRC_POS;
+        parse_and_execute(&src);
+        free(cmd);
+
+        /*LOOP*/
+    } while (1);
+    exit(EXIT_SUCCESS);
 }
