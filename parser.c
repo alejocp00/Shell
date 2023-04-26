@@ -22,7 +22,7 @@ Node *parse_simple_command(Token *token)
     do
     {
         /*If the node stars whit an \n, it's the end of the token*/
-        if (token->text[0] == '\n' || token->text[0] == '#')
+        if (token->text[0] == '\n')
         {
             free_token(token);
             break;
