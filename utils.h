@@ -21,15 +21,15 @@ typedef struct data_node
  */
 DataNode *new_data_node(Node *value);
 
-#pragma region Queue methods
+#pragma region Stack methods
 
 /**
- * @brief Add a new node to the queue
+ * @brief Add a new node to the stack
  *
- * @param queue The queue
+ * @param stack The stack
  * @param value The value of the node
  */
-void push(DataNode *queue, Node *value);
+void push(DataNode *stack, Node *value);
 
 /**
  * @brief Remove the first node of the queue
@@ -37,19 +37,19 @@ void push(DataNode *queue, Node *value);
  * @param queue The queue
  * @return Node* The value of the node
  */
-Node *pop(DataNode *queue);
+Node *pop(DataNode *stack);
 
 #pragma endregion
 
-#pragma region Stack methods
+#pragma region Queue methods
 
 /**
- * @brief Push a new node to the stack
+ * @brief Push a new node to the queue
  *
- * @param stack The stack
+ * @param queue The queue
  * @param value The value of the node
  */
-void enqueue(DataNode *stack, Node *value);
+void enqueue(DataNode *queue, Node *value);
 
 /**
  * @brief Pop the first node of the stack
@@ -57,7 +57,7 @@ void enqueue(DataNode *stack, Node *value);
  * @param stack The stack
  * @return Node* The value of the node
  */
-Node *dequeue(DataNode *stack);
+Node *dequeue(DataNode *queue);
 
 #pragma endregion
 

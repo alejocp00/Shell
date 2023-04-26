@@ -26,58 +26,12 @@ DataNode *new_data_node(Node *value)
 #pragma region Stack methods
 
 /**
- * @brief Add a new node to the queue
- *
- * @param queue The queue
- * @param value The value of the node
- */
-void push(DataNode *queue, Node *value)
-{
-    DataNode *node = new_data_node(value);
-    if (!node)
-    {
-        return;
-    }
-    if (!queue)
-    {
-        queue = node;
-    }
-
-    DataNode *aux = queue;
-    queue = node;
-    queue->next = aux;
-}
-
-/**
- * @brief Remove the first node of the queue
- *
- * @param queue The queue
- * @return Node* The value of the node
- */
-Node *pop(DataNode *queue)
-{
-    if (!queue)
-    {
-        return NULL;
-    }
-    Node *value = queue->value;
-    DataNode *aux = queue;
-    queue = queue->next;
-    free(aux);
-    return value;
-}
-
-#pragma endregion
-
-#pragma region Queue methods
-
-/**
- * @brief Push a new node to the stack
+ * @brief Add a new node to the stack
  *
  * @param stack The stack
  * @param value The value of the node
  */
-void enqueue(DataNode *stack, Node *value)
+void push(DataNode *stack, Node *value)
 {
     DataNode *node = new_data_node(value);
     if (!node)
@@ -90,6 +44,52 @@ void enqueue(DataNode *stack, Node *value)
     }
 
     DataNode *aux = stack;
+    stack = node;
+    stack->next = aux;
+}
+
+/**
+ * @brief Remove the first node of the stack
+ *
+ * @param stack The stack
+ * @return Node* The value of the node
+ */
+Node *pop(DataNode *stack)
+{
+    if (!stack)
+    {
+        return NULL;
+    }
+    Node *value = stack->value;
+    DataNode *aux = stack;
+    stack = stack->next;
+    free(aux);
+    return value;
+}
+
+#pragma endregion
+
+#pragma region Queue methods
+
+/**
+ * @brief Push a new node to the queue
+ *
+ * @param queue The queue
+ * @param value The value of the node
+ */
+void enqueue(DataNode *queue, Node *value)
+{
+    DataNode *node = new_data_node(value);
+    if (!node)
+    {
+        return;
+    }
+    if (!queue)
+    {
+        queue = node;
+    }
+
+    DataNode *aux = queue;
 
     while (aux->next)
     {
@@ -100,20 +100,20 @@ void enqueue(DataNode *stack, Node *value)
 }
 
 /**
- * @brief Pop the first node of the stack
+ * @brief Pop the first node of the queue
  *
- * @param stack The stack
+ * @param queue The queue
  * @return Node* The value of the node
  */
-Node *dequeue(DataNode *stack)
+Node *dequeue(DataNode *queue)
 {
-    if (!stack)
+    if (!queue)
     {
         return NULL;
     }
-    Node *value = stack->value;
-    DataNode *aux = stack;
-    stack = stack->next;
+    Node *value = queue->value;
+    DataNode *aux = queue;
+    queue = queue->next;
     free(aux);
     return value;
 }
