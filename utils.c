@@ -23,7 +23,7 @@ DataNode *new_data_node(Node *value)
 
 #pragma endregion
 
-#pragma region Queue methods
+#pragma region Stack methods
 
 /**
  * @brief Add a new node to the queue
@@ -31,7 +31,7 @@ DataNode *new_data_node(Node *value)
  * @param queue The queue
  * @param value The value of the node
  */
-void enqueue(DataNode *queue, Node *value)
+void push(DataNode *queue, Node *value)
 {
     DataNode *node = new_data_node(value);
     if (!node)
@@ -54,7 +54,7 @@ void enqueue(DataNode *queue, Node *value)
  * @param queue The queue
  * @return Node* The value of the node
  */
-Node *dequeue(DataNode *queue)
+Node *pop(DataNode *queue)
 {
     if (!queue)
     {
@@ -69,7 +69,7 @@ Node *dequeue(DataNode *queue)
 
 #pragma endregion
 
-#pragma region Stack methods
+#pragma region Queue methods
 
 /**
  * @brief Push a new node to the stack
@@ -77,7 +77,7 @@ Node *dequeue(DataNode *queue)
  * @param stack The stack
  * @param value The value of the node
  */
-void push(DataNode *stack, Node *value)
+void enqueue(DataNode *stack, Node *value)
 {
     DataNode *node = new_data_node(value);
     if (!node)
@@ -105,7 +105,7 @@ void push(DataNode *stack, Node *value)
  * @param stack The stack
  * @return Node* The value of the node
  */
-Node *pop(DataNode *stack)
+Node *dequeue(DataNode *stack)
 {
     if (!stack)
     {

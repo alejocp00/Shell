@@ -29,7 +29,7 @@ DataNode *new_data_node(Node *value);
  * @param queue The queue
  * @param value The value of the node
  */
-void enqueue(DataNode *queue, Node *value);
+void push(DataNode *queue, Node *value);
 
 /**
  * @brief Remove the first node of the queue
@@ -37,7 +37,7 @@ void enqueue(DataNode *queue, Node *value);
  * @param queue The queue
  * @return Node* The value of the node
  */
-Node *dequeue(DataNode *queue);
+Node *pop(DataNode *queue);
 
 #pragma endregion
 
@@ -49,7 +49,7 @@ Node *dequeue(DataNode *queue);
  * @param stack The stack
  * @param value The value of the node
  */
-void push(DataNode *stack, Node *value);
+void enqueue(DataNode *stack, Node *value);
 
 /**
  * @brief Pop the first node of the stack
@@ -57,7 +57,7 @@ void push(DataNode *stack, Node *value);
  * @param stack The stack
  * @return Node* The value of the node
  */
-Node *pop(DataNode *stack);
+Node *dequeue(DataNode *stack);
 
 #pragma endregion
 
