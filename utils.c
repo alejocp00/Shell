@@ -40,7 +40,7 @@ void push(DataNode *stack, Node *value)
     }
     if (!stack)
     {
-        stack = node;
+        return;
     }
 
     DataNode *aux = stack;
@@ -56,7 +56,7 @@ void push(DataNode *stack, Node *value)
  */
 Node *pop(DataNode *stack)
 {
-    if (!stack)
+    if (!stack || stack->value == NULL)
     {
         return NULL;
     }
@@ -86,7 +86,7 @@ void enqueue(DataNode *queue, Node *value)
     }
     if (!queue)
     {
-        queue = node;
+        return;
     }
 
     DataNode *aux = queue;
@@ -107,7 +107,7 @@ void enqueue(DataNode *queue, Node *value)
  */
 Node *dequeue(DataNode *queue)
 {
-    if (!queue)
+    if (!queue || queue->value == NULL)
     {
         return NULL;
     }
