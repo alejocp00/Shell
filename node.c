@@ -52,7 +52,7 @@ void add_child(Node *parent, Node *child)
 void set_node_val(Node *node, char *val)
 {
     /*setting the type of value*/
-    node->val_type = V_STR;
+    node->val_info.val_type = V_STR;
     if (!val)
     {
         node->value.str = NULL;
@@ -91,7 +91,7 @@ void free_node(Node *node)
     }
 
     /*free the string of the strings nodes*/
-    if (node->val_type == V_STR)
+    if (node->val_info.val_type == V_STR)
     {
         if (node->value.str)
         {
