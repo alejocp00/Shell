@@ -5,6 +5,7 @@
 typedef enum node_type
 {
     NODE_COMMAND,
+    NODE_OPERATOR,
     NODE_VAR,
 } Node_Type;
 
@@ -21,6 +22,22 @@ typedef enum val_type
     V_STR,
 } Val_Type;
 
+typedef enum precedence
+{
+    // &
+    BG,
+    // ;
+    UNION,
+    // && ||
+    LOGIC,
+    // |
+    PIPE,
+    // > >>
+    REDIR,
+    // <
+    REDIR_IN
+} Precedence;
+
 /**
  * @brief The value of the node
  *
@@ -35,6 +52,12 @@ union value
     long double ldouble;
     char chr;
     char *str;
+};
+
+union val_info
+{
+    Val_Type val_type;
+    Precedence precedence;
 };
 
 /**
@@ -53,7 +76,7 @@ typedef struct node
      * @brief The value type of the node
      *
      */
-    Val_Type val_type;
+    union val_info val_info;
 
     /**
      * @brief The value of the node
