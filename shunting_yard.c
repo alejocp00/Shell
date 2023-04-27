@@ -38,9 +38,8 @@ void *shunting_yard(DataNode *operations)
                 if (current_node->val_info.precedence < operator_stack->value->val_info.precedence)
                     while (operator_stack->value != NULL)
                         enqueue(output_queue, pop(operator_stack));
-                // In operator precedence higher that the top of the stack. Proceed to push the operator
-                else
-                    push(operator_stack, current_node);
+                // Add the operator to the stack
+                push(operator_stack, current_node);
             }
         }
         current_node = dequeue(operations);
