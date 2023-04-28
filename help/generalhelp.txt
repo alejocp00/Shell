@@ -1,0 +1,14 @@
+Integrantes: Alejandro Camacho Pérez, Diana Laura Pérez Trujillo, Carlos Arturo Pérez Cabrera.
+
+Grupo: C312
+
+Funcionalidades:
+basic: funcionalidades básicas (3 puntos)
+spaces: puede existir cualquier cantidad de espacios entre los comandos y parámetros (0.5 puntos)
+help: imprime la ayuda (1 punto)
+
+Cantidad de puntos: 4.5
+
+Built-in:
+cd: permite cambiar de directorio
+help: muestra la ayuda
