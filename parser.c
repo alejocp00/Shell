@@ -1,6 +1,8 @@
 #include <unistd.h>
 #include "parser.h"
 
+char *operators = {'&', ';', '|', '<', '>'};
+
 Node *parse_simple_command(Token *token)
 {
 
@@ -9,8 +11,17 @@ Node *parse_simple_command(Token *token)
     {
         return NULL;
     }
+    Node *cmd;
 
-    Node *cmd = new_node(NODE_COMMAND);
+    /*Checking if the node is an operator*/
+    if (strchr(operators, token->text[0]) != NULL)
+    {
+        cmd = new_node(NODE_OPERATOR);
+        set_node_val(cmd, token->text);
+        free_token(token);
+    }
+
+    cmd = new_node(NODE_COMMAND);
     if (!cmd)
     {
         free_token(token);

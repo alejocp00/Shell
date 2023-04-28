@@ -144,6 +144,7 @@ Token *tokenize(Source *source)
                 if (buf_index > 0)
                 {
                     unget_char(source);
+                    return &EOF_token;
                 }
                 else
                 {
@@ -157,7 +158,11 @@ Token *tokenize(Source *source)
         case ('<'):
             // Checking if we are creating a command token instated
             if (buf_index > 0)
+            {
                 unget_char(source);
+                return &EOF_token;
+            }
+            end = true;
         default:
             add_to_buffer(next);
             break;

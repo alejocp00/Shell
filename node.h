@@ -140,4 +140,11 @@ void free_node(Node *node);
  */
 void set_node_val(Node *node, char *val);
 
+/**
+ * @brief Set the node operator precedence.
+ *
+ * @param node A Node struct that represent the operator.
+ */
+void set_operator_precedence(Node *node);
+
 #endif
