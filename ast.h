@@ -1,5 +1,5 @@
-#ifndef UTILS_H
-#define UTILS_H
+#ifndef AST_H
+#define AST_H
 
 #include "node.h"
 
@@ -60,5 +60,13 @@ void enqueue(DataNode *queue, Node *value);
 Node *dequeue(DataNode *queue);
 
 #pragma endregion
+
+/**
+ * @brief Create the AST from the operations using the shunting yard algorithm
+ *
+ * @param operations The operations to create the AST
+ *
+ */
+void *shunting_yard(DataNode *operations);
 
 #endif
