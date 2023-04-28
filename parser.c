@@ -19,6 +19,7 @@ Node *parse_simple_command(Token *token)
         cmd = new_node(NODE_OPERATOR);
         set_node_val(cmd, token->text);
         free_token(token);
+        return cmd;
     }
 
     cmd = new_node(NODE_COMMAND);

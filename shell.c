@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "shell.h"
 #include "executor.h"
+#include "ast.h"
 
 void print_prompt()
 {
@@ -20,6 +21,8 @@ int parse_and_execute(Source *src)
         return 0;
     }
 
+    DataNode *ast;
+
     /*If the token is valid, parse the token in to a Node*/
     while (tok && tok != &EOF_token)
     {
@@ -28,13 +31,18 @@ int parse_and_execute(Source *src)
         {
             break;
         }
-
-        /*Execute the command*/
-        do_simple_command(cmd);
-
-        free_node(cmd);
+        if (!ast)
+            ast = new_data_node(cmd);
+        else
+            enqueue(ast, cmd);
         tok = tokenize(src);
     }
+
+    // ToDo: Free ast, and ast nodes.
+
+    shunting_yard(ast);
+
+    execute_ast(ast);
     return 1;
 }
 
