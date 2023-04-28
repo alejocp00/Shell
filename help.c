@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+/*print char by char the content of the text file indicated*/
 int print_file_text(FILE *file)
 {
     int c = 0;
@@ -11,10 +12,12 @@ int print_file_text(FILE *file)
     return 0;
 }
 
+/*help function indicates and prints which file to read depending on the keyword*/
 int help(char *keyword)
 {
     FILE *file;
     int c = 0;
+    /*if keyword is NULL, then it prints generalhelp file*/
     if(!keyword)
     {
         file = fopen("help/generalhelp.txt", "r");
@@ -26,6 +29,7 @@ int help(char *keyword)
        strcat(buffer, ".txt");
        file = fopen(buffer, "r");
        
+       /*if file is NULL it means that don't exist a file with the keyword indicated*/
        if(!file)
        {
         printf("Keyword no válida \n");
