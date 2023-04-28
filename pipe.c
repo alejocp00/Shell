@@ -4,13 +4,10 @@
 #include <sys/wait.h>
 #include "builtins.h"
 
-int pipe(int argc, char **argv)
+int pipes(int argc, char **argv)
 {
     int pipefd[2];
     pid_t pid;
-
-    char *cmd1[] = {"ls", "-l", NULL};
-    char *cmd2[] = {"grep", "foo", NULL};
 
     if (pipe(pipefd) == -1) {
         perror("pipe");
@@ -29,8 +26,7 @@ int pipe(int argc, char **argv)
         close(pipefd[0]); // Close unused read end
         dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to pipe
         close(pipefd[1]); // Close write end
-        execvp(cmd1[0], cmd1);
-        perror("execvp");
+        perror("command");
         return 1;
     } 
     
@@ -40,10 +36,9 @@ int pipe(int argc, char **argv)
         close(pipefd[1]); // Close unused write end
         dup2(pipefd[0], STDIN_FILENO); // Redirect stdin from pipe
         close(pipefd[0]); // Close read end
-        execvp(cmd2[0], cmd2);
-        perror("execvp");
+        perror("command");
         return 1;
     }
     return 0;   
 }
-Builtins pipe_struct = {"|", pipe};
+Builtins pipes_struct = {"|", pipes};
