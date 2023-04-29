@@ -2,8 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "shell.h"
-#include "executor.h"
 #include "ast.h"
+#include "executor.h"
 
 void print_prompt()
 {
@@ -21,7 +21,7 @@ int parse_and_execute(Source *src)
         return 0;
     }
 
-    DataNode *ast;
+    DataNode *pre_ast;
 
     /*If the token is valid, parse the token in to a Node*/
     while (tok && tok != &EOF_token)
@@ -31,16 +31,17 @@ int parse_and_execute(Source *src)
         {
             break;
         }
-        if (!ast)
-            ast = new_data_node(cmd);
+        if (!pre_ast)
+            pre_ast = new_data_node(cmd);
         else
-            enqueue(ast, cmd);
+            enqueue(pre_ast, cmd);
         tok = tokenize(src);
     }
 
     // ToDo: Free ast, and ast nodes.
 
-    shunting_yard(ast);
+    shunting_yard(pre_ast);
+    Node *ast = build_ast(pre_ast);
 
     execute_ast(ast);
     return 1;
