@@ -4,6 +4,9 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include "builtins.h"
+#include "node.c"
+
+Node pidArray;
 
 /**
  * @brief This method excecute the & function
@@ -16,6 +19,7 @@ int backgroundfunc(int argc, char **argv)
 {
     pid_t pid;
     pid = fork(); 
+    insert(pidArray, pid);//inserting the pid in the array
 
     if (pid == 0) { //Child process
         printf("Children process executing...\n");
@@ -72,13 +76,17 @@ Builtins jobs_struct = {"jobs", jobs};
 int fg(int argc, char **argv)
 {
     if(argc==NULL){//Hacer que se ejecute el proceso mas reciente enviado al background///////////
-
-
-
+     pid_t recentProcess= getRecent(pidArray);
+     //exec("fg", recentProcess);
+      kill(recentProcess, SIGCONT);
+      waitpid(recentProcess, NULL, 0);
     }
+    else{
     // send SIGCONT signal to the process
     kill(argc, SIGCONT);
-    // wait for the process to finish
+      // wait for the process to finish
     waitpid(argc, NULL, 0);
+    }
+  
 }
 Builtins fg_struct = {"fg", fg};
