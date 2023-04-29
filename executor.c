@@ -8,6 +8,7 @@
 #include "node.h"
 #include "executor.h"
 #include "ast.h"
+#include "structs.h"
 
 char *search_path(char *file)
 {
@@ -83,6 +84,7 @@ char *search_path(char *file)
     errno = ENOENT;
     return NULL;
 }
+
 int do_exec_cmd(int argc, char **argv)
 {
     if (strchr(argv[0], '/'))
@@ -101,6 +103,7 @@ int do_exec_cmd(int argc, char **argv)
     }
     return 0;
 }
+
 static inline void free_argv(int argc, char **argv)
 {
     if (!argc)
@@ -112,13 +115,15 @@ static inline void free_argv(int argc, char **argv)
         free(argv[argc]);
     }
 }
-int do_simple_command(Node *node)
+
+int do_simple_command(Node *node, int fd_in, int fd_out)
 {
     /*Init variables*/
     if (!node)
     {
         return 0;
     }
+
     Node *child = node->first_child;
     if (!child)
     {
@@ -127,38 +132,28 @@ int do_simple_command(Node *node)
 
     int argc = 0;
     long max_args = 255;
-
-    /* Keeping 1 for the terminating NULL arg */
     char *argv[max_args + 1];
-    char *str;
 
-    while (child)
-    {
-        /*Getting and reserving the necessary space*/
-        str = child->value.str;
-        argv[argc] = malloc(strlen(str) + 1);
-
-        if (!argv[argc])
-        {
-            free_argv(argc, argv);
-            return 0;
-        }
-
-        /*Saving the arg in argv*/
-        strcpy(argv[argc], str);
-        if (++argc >= max_args)
-        {
-            break;
-        }
-
-        /*Updating to next child*/
-        child = child->next_sibling;
-    }
-    argv[argc] = NULL;
+    get_params(child, &argc, argv);
 
     pid_t child_pid = 0;
+    int status = 0;
+
     if ((child_pid = fork()) == 0)
     {
+
+        if (fd_in != -1)
+        {
+            dup2(fd_in, STDIN_FILENO);
+            close(fd_in);
+        }
+
+        if (fd_out != -1)
+        {
+            dup2(fd_out, STDOUT_FILENO);
+            close(fd_out);
+        }
+
         do_exec_cmd(argc, argv);
         fprintf(stderr, "error: failed to execute command: %s\n",
                 strerror(errno));
@@ -181,20 +176,123 @@ int do_simple_command(Node *node)
                 strerror(errno));
         return 0;
     }
-    int status = 0;
-    waitpid(child_pid, &status, 0);
+    else
+    {
+        if (fd_in != -1)
+        {
+            close(fd_in);
+        }
+        if (fd_out != -1)
+        {
+            close(fd_out);
+        }
+        do
+        {
+            waitpid(child_pid, &status, WUNTRACED);
+        } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    }
+    // waitpid(child_pid, &status, 0);
     free_argv(argc, argv);
 
     return 1;
 }
 
-/**
- * @brief Execute the AST
- *
- * @param ast The AST to execute
- * @return int Return 0 if success, 1 if fail
- */
-int execute_ast(DataNode *ast)
+void get_params(Node *child, int *argc, char **argv)
 {
-    // ToDo: Implement the execution of the AST
+    /* Keeping 1 for the terminating NULL arg */
+    char *str;
+    long max_args = 255;
+
+    while (child)
+    {
+        /*Getting and reserving the necessary space*/
+        str = child->value.str;
+        argv[*argc] = malloc(strlen(str) + 1);
+
+        if (!argv[*argc])
+        {
+            free_argv(argc, argv);
+            return 0;
+        }
+
+        /*Saving the arg in argv*/
+        strcpy(argv[*argc], str);
+        if (++*argc >= max_args)
+        {
+            break;
+        }
+
+        /*Updating to next child*/
+        child = child->next_sibling;
+    }
+    argv[*argc] = NULL;
 }
+
+int execute_ast(Node *ast, int fd_in, int fd_out)
+{
+    /*Init variables*/
+    if (!ast)
+    {
+        return 0;
+    }
+    if (ast->type == NODE_COMMAND)
+    {
+        return do_simple_command(ast, fd_in, fd_out);
+    }
+
+    if (ast->type == NODE_OPERATOR)
+    {
+        if (strcmp(ast->value.str, "&") == 0)
+        {
+            /*Background*/
+            return background_func(ast);
+        }
+        else if (strcmp(ast->value.str, ";") == 0)
+        {
+            /*Sequential*/
+            return union_func(ast);
+        }
+        else if (strcmp(ast->value.str, "&&"))
+        {
+            /*And*/
+            return and_func(ast);
+        }
+        else if (strcmp(ast->value.str, "||") == 0)
+        {
+            /*Or*/
+            return or_func(ast);
+        }
+        else if (strcmp(ast->value.str, ">") == 0)
+        {
+            /*Output*/
+            return retofile(ast);
+        }
+        else if (strcmp(ast->value.str, ">>") == 0)
+        {
+            /*Append*/
+            return retofileap(ast);
+        }
+        else if (strcmp(ast->value.str, "|") == 0)
+        {
+            /*Pipe*/
+            return pipes(ast);
+        }
+        else if (strcmp(ast->value.str, "<") == 0)
+        {
+            /*Input*/
+            return refromfile(ast);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    return 1;
+}
+
+/* ToDo:
+ * - El flujo para ejecutar va a ser interno, y las redirecciones van a ser con indicadores.
+ * - Las funciones de redirección van a indicar si hay o no, y siempre se pasa al método los fd de entrada y salida.
+ * - Las lógicas mandan a ejecutar con evaluación del estado resultante
+ */

@@ -43,7 +43,7 @@ int parse_and_execute(Source *src)
     shunting_yard(pre_ast);
     Node *ast = build_ast(pre_ast);
 
-    execute_ast(ast);
+    execute_ast(ast, -1, -1);
     return 1;
 }
 
