@@ -112,32 +112,59 @@ void set_operator_precedence(Node *node)
 
     bool double_operator = 1 < strlen(node->value.str);
     char *value = node->value.str;
-    Precedence *precedence = node->val_info.precedence;
+    Precedence *precedence = &node->val_info.precedence;
 
     switch (*value)
     {
     case '&':
         if (double_operator)
-            precedence = LOGIC;
+            *precedence = LOGIC;
         else
-            precedence = BG;
+            *precedence = BG;
         break;
     case ';':
-        precedence = UNION;
+        *precedence = UNION;
         break;
     case '|':
         if (double_operator)
-            precedence = LOGIC;
+            *precedence = LOGIC;
         else
-            precedence = PIPE;
+            *precedence = PIPE;
         break;
     case '<':
-        precedence = REDIR_IN;
+        *precedence = REDIR_IN;
         break;
     case '>':
-        precedence = REDIR;
+        *precedence = REDIR;
         break;
     default:
         break;
+    }
+}
+
+/**
+ * @brief Set the tree values
+ *
+ * @param p The parent node
+ * @param l The left node
+ * @param r The right node
+ */
+void set_tree_values(Node *p, Node *l, Node *r)
+{
+    if (!p)
+    {
+        return;
+    }
+
+    if (l)
+    {
+        p->left_child = l;
+        l->parent = p;
+    }
+
+    if (r)
+    {
+        p->right_child = r;
+        r->parent = p;
     }
 }

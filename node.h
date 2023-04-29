@@ -107,6 +107,24 @@ typedef struct node
      *
      */
     struct node *previous_sibling;
+
+    /**
+     * @brief The parent node
+     *
+     */
+    struct node *parent;
+
+    /**
+     * @brief The left node
+     *
+     */
+    struct node *left_child;
+
+    /**
+     * @brief The right node
+     *
+     */
+    struct node *right_child;
 } Node;
 
 /**
@@ -146,5 +164,14 @@ void set_node_val(Node *node, char *val);
  * @param node A Node struct that represent the operator.
  */
 void set_operator_precedence(Node *node);
+
+/**
+ * @brief Set the tree values
+ *
+ * @param p The parent node
+ * @param l The left node
+ * @param r The right node
+ */
+void set_tree_values(Node *p, Node *l, Node *r);
 
 #endif
