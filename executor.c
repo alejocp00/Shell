@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 #include "node.h"
 #include "executor.h"
+#include "ast.h"
 
 char *search_path(char *file)
 {
@@ -185,4 +186,15 @@ int do_simple_command(Node *node)
     free_argv(argc, argv);
 
     return 1;
+}
+
+/**
+ * @brief Execute the AST
+ *
+ * @param ast The AST to execute
+ * @return int Return 0 if success, 1 if fail
+ */
+int execute_ast(DataNode *ast)
+{
+    // ToDo: Implement the execution of the AST
 }

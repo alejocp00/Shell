@@ -27,4 +27,10 @@ int do_exec_cmd(int argc, char **argv);
  */
 int do_simple_command(Node *node);
 
+/**
+ * @brief Execute the AST
+ *
+ */
+int execute_ast(DataNode *ast);
+
 #endif
