@@ -69,4 +69,6 @@ Node *dequeue(DataNode *queue);
  */
 void *shunting_yard(DataNode *operations);
 
+Node *build_ast(DataNode *shunting_yard_result);
+
 #endif

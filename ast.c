@@ -170,3 +170,84 @@ void *shunting_yard(DataNode *operations)
     for (current_node = pop(operator_stack); current_node != NULL; current_node = pop(operator_stack))
         enqueue(operations, current_node);
 }
+
+/**
+ * @brief Build the AST from the shunting yard result
+ *
+ * @param shunting_yard_result The shunting yard result
+ * @return Node* The root of the AST
+ */
+Node *build_ast(DataNode *shunting_yard_result)
+{
+    // Take the first node of shunting_yard_result
+    // if the node is a command, it will go to the command stack
+    // if the node is an operator, check if the command stack has 2 elements, then add the top element as the right child and the second top element as the left child, then add the operator as the parent, then add the parent to the command stack
+    // if the node is an operator, and are only 1 element in the command stack, add the top of the operator stack as the right child, and the top of the command stack as the left child, then add the operator as the parent, then add the parent to the command stack
+    // if the node is an operator, and are no elements in the command stack, add the top of the operator stack as the right child, and the top of the operator stack as the left child, then add the operator as the parent, then add the parent to the command stack
+    // the algorithm ends when the shunting_yard_result is empty
+    // The stack will be DataNode *command_stack and DataNode *operator_stack
+
+    DataNode *command_stack = NULL;
+    DataNode *operator_stack = NULL;
+    Node *current_node = dequeue(shunting_yard_result);
+
+    int command_stack_size = 0;
+    int operator_stack_size = 0;
+
+    while (current_node != NULL)
+    {
+        // Command case
+        if (current_node->type == NODE_COMMAND)
+        {
+            if (command_stack_size == 0)
+            {
+                command_stack = new_data_node(current_node);
+                command_stack_size++;
+            }
+            else
+            {
+                push(command_stack, current_node);
+                command_stack_size++;
+            }
+        }
+        // Operator case
+        else
+        {
+
+            if (command_stack_size >= 2)
+            {
+                Node *right_child = pop(command_stack);
+                Node *left_child = pop(command_stack);
+
+                set_tree_values(current_node, left_child, right_child);
+
+                push(operator_stack, current_node);
+                command_stack_size--;
+                command_stack_size--;
+            }
+            else if (command_stack_size == 1)
+            {
+                Node *right_child = pop(command_stack);
+                Node *left_child = pop(operator_stack);
+
+                set_tree_values(current_node, left_child, right_child);
+
+                push(operator_stack, current_node);
+                command_stack_size--;
+            }
+            else
+            {
+                Node *right_child = pop(operator_stack);
+                Node *left_child = pop(operator_stack);
+
+                set_tree_values(current_node, left_child, right_child);
+
+                push(operator_stack, current_node);
+                command_stack_size--;
+            }
+        }
+        current_node = dequeue(shunting_yard_result);
+    }
+
+    return pop(operator_stack);
+}
