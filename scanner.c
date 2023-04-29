@@ -119,13 +119,14 @@ Token *tokenize(Source *source)
             if (buf_index > 0)
                 end = true;
             break;
-        /*End of line*/
+        /*End of command*/
         case ('#'):
             unget_char(source);
             if (buf_index == 0)
                 return &EOF_token;
             end = true;
             break;
+        /*End of line*/
         case ('\n'):
             if (buf_index > 0)
                 unget_char(source);
@@ -133,6 +134,35 @@ Token *tokenize(Source *source)
                 add_to_buffer(next);
             end = true;
             break;
+        // Operators
+        case ('&'):
+        case ('>'):
+        case ('|'):
+            // Searching for the double char operators
+            if (peek_next_char(source) == next)
+            {
+                if (buf_index > 0)
+                {
+                    unget_char(source);
+                    return &EOF_token;
+                }
+                else
+                {
+                    add_to_buffer(next);
+                    add_to_buffer(get_next_char(source));
+                }
+                end = true;
+                break;
+            }
+        case (';'):
+        case ('<'):
+            // Checking if we are creating a command token instated
+            if (buf_index > 0)
+            {
+                unget_char(source);
+                return &EOF_token;
+            }
+            end = true;
         default:
             add_to_buffer(next);
             break;

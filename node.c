@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "node.h"
+#include "structs.h"
 
 /*Create a new node of the type indicated*/
 Node *new_node(Node_Type type)
@@ -100,4 +101,70 @@ void free_node(Node *node)
     }
     /*free the current node*/
     free(node);
+}
+
+void set_operator_precedence(Node *node)
+{
+    if (!node)
+    {
+        return;
+    }
+
+    bool double_operator = 1 < strlen(node->value.str);
+    char *value = node->value.str;
+    Precedence *precedence = &node->val_info.precedence;
+
+    switch (*value)
+    {
+    case '&':
+        if (double_operator)
+            *precedence = LOGIC;
+        else
+            *precedence = BG;
+        break;
+    case ';':
+        *precedence = UNION;
+        break;
+    case '|':
+        if (double_operator)
+            *precedence = LOGIC;
+        else
+            *precedence = PIPE;
+        break;
+    case '<':
+        *precedence = REDIR_IN;
+        break;
+    case '>':
+        *precedence = REDIR;
+        break;
+    default:
+        break;
+    }
+}
+
+/**
+ * @brief Set the tree values
+ *
+ * @param p The parent node
+ * @param l The left node
+ * @param r The right node
+ */
+void set_tree_values(Node *p, Node *l, Node *r)
+{
+    if (!p)
+    {
+        return;
+    }
+
+    if (l)
+    {
+        p->left_child = l;
+        l->parent = p;
+    }
+
+    if (r)
+    {
+        p->right_child = r;
+        r->parent = p;
+    }
 }
