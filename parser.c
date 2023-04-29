@@ -1,7 +1,8 @@
 #include <unistd.h>
 #include "parser.h"
+#include "string.h"
 
-char *operators = {'&', ';', '|', '<', '>'};
+char *operators = "&;|<>";
 
 Node *parse_simple_command(Token *token)
 {
