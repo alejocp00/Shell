@@ -3,10 +3,12 @@
 #include <stdlib.h>
 #include <signal.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include "builtins.h"
-#include "node.c"
+#include "node.h"
+#include "list.h"
 
-Node pidArray;
+list *background_process;
 
 /**
  * @brief This method excecute the & function
@@ -15,26 +17,26 @@ Node pidArray;
  * @param argv 
  * @return int 
  */
-int backgroundfunc(int argc, char **argv)
+int background_func(int argc, char **argv)
 {
     pid_t pid;
     pid = fork(); 
-    insert(pidArray, pid);//inserting the pid in the array
+    PushEnd(background_process, pid);//inserting the pid in the array
 
     if (pid == 0) { //Child process
-        printf("Children process executing...\n");
+       // printf("Children process executing...\n");
         execvp("programa", NULL); // Ejecutar programa en segundo plano////////////////
     } else if (pid > 0) { // Parent process
-        printf("parent process executing...\n");
-        waitpid(pid, NULL, WNOHANG); // wait for child to exit
-        printf("child process finished.\n");
+       // printf("parent process executing...\n");
+       // waitpid(pid, NULL, WNOHANG); // wait for child to exit
+       // printf("child process finished.\n");
     } else { //error ocurred
         printf("error to create child process.");
         return 1;
     }
     return 0;
 }
-Builtins backgroundfunc_struct = {"&", backgroundfunc};
+Builtins background_func_struct = {"&", background_func};
 
 
 /**
@@ -46,20 +48,18 @@ Builtins backgroundfunc_struct = {"&", backgroundfunc};
  */
 int jobs(int argc, char **argv)
 { 
-     pid_t pid, pgid, mypgid;
-
-    mypgid = getpgid(getpid());
-
+     pid_t pid=getpid();
+     pid_t pgid= getpgid(pid);
     printf("Background processes:\n");
-
+    pid_t p;
     // iterates over all possible process IDs
-    for (pid = 1; pid <= 65535; pid++) {//65535 its the max number of process
+    for (p = 1; p <= 65535; p++) {//65535 its the max number of process
         // obtain the group ID for the process
         pgid = getpgid(pid);
 
         // if the pid its different from the group id, then its a background process
-        if (pgid != mypgid) {
-            printf("PID: %d\n", pid);
+        if (getpgid(p) == pgid && p != pid) {
+            printf("PID=%d",  p);
         }
     }
     return 0;
@@ -76,10 +76,10 @@ Builtins jobs_struct = {"jobs", jobs};
 int fg(int argc, char **argv)
 {
     if(argc==NULL){//Hacer que se ejecute el proceso mas reciente enviado al background///////////
-     pid_t recentProcess= getRecent(pidArray);
+     pid_t recentProcess= getRecent(background_process);
      //exec("fg", recentProcess);
-      kill(recentProcess, SIGCONT);
-      waitpid(recentProcess, NULL, 0);
+     kill(recentProcess, SIGCONT);
+     waitpid(recentProcess, NULL, 0);
     }
     else{
     // send SIGCONT signal to the process
@@ -90,3 +90,26 @@ int fg(int argc, char **argv)
   
 }
 Builtins fg_struct = {"fg", fg};
+
+/**
+ * @brief This method excecute the bg function
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
+ */
+
+void my_sh_update_background() {
+    int status;
+
+    if (background_process->size > 0) {
+        for (int i = 0; i < background_process->size; ++i) {
+            waitpid(GetValue(background_process,i), &status, WNOHANG);
+            if (WIFEXITED(status)) {
+                printf("[%d]\tDone\t%d\n", i + 1, GetValue(background_process,i));
+                DeleteValue(background_process, i);
+                i = -1;
+            }
+        }
+    }
+}

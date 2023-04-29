@@ -2,9 +2,9 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "builtins.h"
+#include "node.h"
 
-int pipes(int argc, char **argv)
+int pipes(DataNode *nodes)
 {
     int pipefd[2];
     pid_t pid;
@@ -41,4 +41,3 @@ int pipes(int argc, char **argv)
     }
     return 0;   
 }
-Builtins pipes_struct = {"|", pipes};
