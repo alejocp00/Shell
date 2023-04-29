@@ -30,10 +30,10 @@ typedef enum precedence
     UNION,
     // && ||
     LOGIC,
-    // |
-    PIPE,
     // > >>
     REDIR,
+    // |
+    PIPE,
     // <
     REDIR_IN
 } Precedence;
