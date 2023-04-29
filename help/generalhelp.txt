@@ -1,0 +1,23 @@
+Integrantes: Alejandro Camacho Pérez, Diana Laura Pérez Trujillo, Carlos Arturo Pérez Cabrera.
+
+Grupo: C312
+
+Funcionalidades:
+basic: funcionalidades básicas (3 puntos)
+multi-pipe: Implementar más de una tubería (1 punto)
+background: tener procesos en el background (0.5 puntos)
+spaces: puede existir cualquier cantidad de espacios entre los comandos y parámetros (0.5 puntos)
+history: mostrar un historial de comandos (0.5 puntos)
+ctrl+c: posibilidad de al dar ctrl+c se "mate" el proceso que se esta ejecutando (0.5 puntos)
+chain: operadores para encadenar comandos (0.5 puntos)
+if: expresiones condicionales (1 punto)
+multi-if: múltiples condicionales (0.5 puntos)
+help: imprime la ayuda (1 punto)
+variables: variables y comillas invertidas (1 punto)
+
+
+Cantidad de puntos: 4.5
+
+Built-in:
+cd: permite cambiar de directorio
+help: muestra la ayuda

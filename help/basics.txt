@@ -1,0 +1,23 @@
+Basics
+
+prompt:
+-siempre aparece $ al final del prompt.
+-al finalizar la ejecución del comando previo el prompt se muestra nuevamente.
+
+ejecución de programas
+-Los programas son ejecutados y se imprime la salida de ellos.
+
+cd:
+-Cambia el directorio en que nos encontramos por el indicado por el usuario.
+
+>, <, >>:
+-Redirige la entrada y salida estándar de comandos hacia/desde ficheros.
+
+caracter #:
+-a partir de donde aparezca dicho cortel se ignora todo lo que viene detrás.
+
+exit:
+-termina el shell.
+
+
+
