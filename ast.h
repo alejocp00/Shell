@@ -1,6 +1,6 @@
 #ifndef AST_H
 #define AST_H
-
+#include <stdlib.h>
 #include "node.h"
 
 /**
@@ -10,7 +10,7 @@
 typedef struct data_node
 {
     Node *value;
-    DataNode *next;
+    struct data_node *next;
 } DataNode;
 
 /**
