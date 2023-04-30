@@ -35,4 +35,10 @@ int again(int argc, char **argv);
 /*cd function*/
 int cd(int argc, char **argv);
 
+/*true function. Returns 0*/
+int true(int argc, char **argv);
+
+/*false function. Returns 1*/
+int false(int argc, char **argv);
+
 #endif
