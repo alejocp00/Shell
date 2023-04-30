@@ -12,14 +12,10 @@
  */
 int retofile(Node *argv)
 {
-    // FILE *fp;
-    //     fp = fopen(argv->right_child-> value.str , "w+");
-    //     fprintf(fp, "%s", argv->left_child->value.str);
-    //     fclose(fp);
     char *end_ptr = 0;
   //int fd = open(argv->right_child, O_WRONLY | O_TRUNC | O_CREAT, 0600);
-    int fd = (int) strtol(argv->right_child, &end_ptr, 10);
-     if (*(end_ptr + 1) != '\0') {
+    int fd = (int) strtol(argv->right_child, &end_ptr, 10);//try to convert to int the file name
+     if (*(end_ptr + 1) != '\0') {//if the convert is not succesfull then take as a file descriptor the value of the open function
         fd = open(argv->right_child, O_WRONLY | O_TRUNC | O_CREAT, 0600);
     }
     return fd;
@@ -34,19 +30,6 @@ int retofile(Node *argv)
  */
 int retofileap(Node *argv)
 {
-  //   FILE *fp;
-
-  // fp = fopen(argv[1], "a");
-
-  // if (fp == NULL) {
-  //   return 1;
-  // }
-
-  // fprintf(fp, argv[0]);
-
-  // fclose(fp);
-
-  // return 0;
    char *end_ptr = 0;
   //int fd = open(argv->right_child, O_WRONLY | O_APPEND  | O_CREAT, 0600);
     int fd = (int) strtol(argv->right_child, &end_ptr, 10);
@@ -65,17 +48,6 @@ int retofileap(Node *argv)
  */
 int refromfile(Node *argv)
 {
-  // FILE *fp;
-
-  // fp = fopen(argv[1], "r");
-
-  // if (fp == NULL) {
-  //   return 1;
-  // }
-
-  // fclose(fp);
-
-  // return 0;
   char *end_ptr = 0;
   //int fd = open(argv->right_child, O_WRONLY | O_APPEND  | O_CREAT, 0600);
     int fd = (int) strtol(argv->right_child, &end_ptr, 10);

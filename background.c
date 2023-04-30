@@ -18,19 +18,16 @@ list *background_process;
  * @param argv 
  * @return int 
  */
-int background_func(int argc, char **argv)
+int background_func(Node *argv)
 {
     pid_t pid;
     pid = fork(); 
     PushEnd(background_process, pid);//inserting the pid in the array
 
     if (pid == 0) { //Child process
-       // printf("Children process executing...\n");
-        execvp("programa", NULL); // Ejecutar programa en segundo plano////////////////
+        //exit();
     } else if (pid > 0) { // Parent process
-       // printf("parent process executing...\n");
-       // waitpid(pid, NULL, WNOHANG); // wait for child to exit
-       // printf("child process finished.\n");
+     PushEnd(background_process,pid);//Add to the background process list
     } else { //error ocurred
         printf("error to create child process.");
         return 1;
@@ -46,13 +43,12 @@ int background_func(int argc, char **argv)
  * @param argv 
  * @return int 
  */
-int jobs(int argc, char **argv)
+int jobs(Node *argv)
 { 
-     pid_t pid=getpid();
-     //pid_t pgid= getpgid(pid);
+    pid_t pid=getpid();
     printf("Background processes:\n");
-    // iterates over all possible process IDs
-    for (int p = 1; p <= background_process->size; p++) {
+   
+    for (int p = 1; p <= background_process->size; p++) { // iterates over all possible process IDs
 
         printf("PID=%d", GetValue(background_process,p));
     }
@@ -67,21 +63,33 @@ Builtins jobs_struct = {"jobs", jobs};
  * @param argv 
  * @return int 
  */
-int fg(int argc, char **argv)
+int fg(int pid)
 {
-    if(argc==NULL){//Hacer que se ejecute el proceso mas reciente enviado al background///////////
-     pid_t recentProcess= getRecent(background_process);
-     //exec("fg", recentProcess);
-     kill(recentProcess, SIGCONT);
-     waitpid(recentProcess, NULL, 0);
+    int status = 1;
+    if(pid==NULL){//Do the recent process
+    if(background_process->size==0){
+        printf("No background process");
+        return 1;
     }
+     pid_t recentProcess= GetValue(background_process,background_process->size-1);
+     do {
+     waitpid(recentProcess, &status, WUNTRACED);//wait for the process to finish
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    DeleteValue(background_process,recentProcess);
+    }
+
     else{
-    // send SIGCONT signal to the process
-    kill(argc, SIGCONT);
-      // wait for the process to finish
-    waitpid(argc, NULL, 0);
+    if(GetValue(background_process,pid)==NULL){//if the process is not in the list
+        printf("Process not found");
+        return 1;
     }
-  
+    do {
+     waitpid(pid, &status, WUNTRACED);
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+    DeleteValue(background_process,pid);
+    } 
+
+    return 0;
 }
 Builtins fg_struct = {"fg", fg};
 
