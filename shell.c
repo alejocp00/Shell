@@ -21,7 +21,7 @@ int parse_and_execute(Source *src)
         return 0;
     }
 
-    DataNode *pre_ast;
+    DataNode *pre_ast = NULL;
 
     /*If the token is valid, parse the token into a Node*/
     while (tok && tok != &EOF_token)

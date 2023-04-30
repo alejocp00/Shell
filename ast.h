@@ -37,7 +37,7 @@ void push(DataNode *stack, Node *value);
  * @param queue The queue
  * @return Node* The value of the node
  */
-Node *pop(DataNode *stack);
+Node *pop(DataNode **stack);
 
 #pragma endregion
 
@@ -57,7 +57,7 @@ void enqueue(DataNode *queue, Node *value);
  * @param stack The stack
  * @return Node* The value of the node
  */
-Node *dequeue(DataNode *queue);
+Node *dequeue(DataNode **queue);
 
 #pragma endregion
 

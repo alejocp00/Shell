@@ -16,14 +16,10 @@ Node *parse_simple_command(Token *token)
 
     /*Checking if the node is an operator*/
     if (strchr(operators, token->text[0]) != NULL)
-    {
         cmd = new_node(NODE_OPERATOR);
-        set_node_val(cmd, token->text);
-        free_token(token);
-        return cmd;
-    }
+    else
+        cmd = new_node(NODE_COMMAND);
 
-    cmd = new_node(NODE_COMMAND);
     if (!cmd)
     {
         free_token(token);

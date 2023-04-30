@@ -142,7 +142,9 @@ int do_simple_command(Node *node, int fd_in, int fd_out)
     long max_args = 255;
     char *argv[max_args + 1];
 
-    get_params(child, &argc, argv);
+    int have_args = get_params(child, &argc, argv);
+    if (!have_args)
+        return 0;
 
     pid_t child_pid = 0;
     int status = 0;
@@ -205,7 +207,7 @@ int do_simple_command(Node *node, int fd_in, int fd_out)
     return 1;
 }
 
-void get_params(Node *child, int *argc, char **argv)
+int get_params(Node *child, int *argc, char **argv)
 {
     /* Keeping 1 for the terminating NULL arg */
     char *str;
@@ -219,7 +221,7 @@ void get_params(Node *child, int *argc, char **argv)
 
         if (!argv[*argc])
         {
-            free_argv(argc, argv);
+            free_argv(*argc, argv);
             return 0;
         }
 
@@ -234,6 +236,7 @@ void get_params(Node *child, int *argc, char **argv)
         child = child->next_sibling;
     }
     argv[*argc] = NULL;
+    return 1;
 }
 
 int execute_ast(Node *ast, int fd_in, int fd_out)
