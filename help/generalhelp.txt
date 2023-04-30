@@ -11,13 +11,16 @@ history: mostrar un historial de comandos (0.5 puntos)
 ctrl+c: posibilidad de al dar ctrl+c se "mate" el proceso que se esta ejecutando (0.5 puntos)
 chain: operadores para encadenar comandos (0.5 puntos)
 if: expresiones condicionales (1 punto)
-multi-if: múltiples condicionales (0.5 puntos)
 help: imprime la ayuda (1 punto)
-variables: variables y comillas invertidas (1 punto)
 
 
-Cantidad de puntos: 4.5
+Cantidad de puntos: 5.0
 
 Built-in:
 cd: permite cambiar de directorio
 help: muestra la ayuda
+history: muestra el historial
+again: ejecuta nuevamente el comando que tiene el numero indicado en el history.
+jobs: lista todos los procesos que están corriendo en el background.
+fg: manda un proceso del background al foreground.
+

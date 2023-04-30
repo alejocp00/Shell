@@ -1,23 +1,44 @@
-Basics
+**Basics**
 
-prompt:
--siempre aparece $ al final del prompt.
--al finalizar la ejecución del comando previo el prompt se muestra nuevamente.
+-prompt:
+El prompt siempre se imprime al finalizar la ejecución del comando previo. Al final del prompt siempre aparece $.
 
-ejecución de programas
--Los programas son ejecutados y se imprime la salida de ellos.
+Ejemplo: MyShell:/home/diani/Proyectos/Shell$
 
-cd:
--Cambia el directorio en que nos encontramos por el indicado por el usuario.
+-ejecución de programas
+Los programas son ejecutados y se imprime la salida de ellos.
 
->, <, >>:
--Redirige la entrada y salida estándar de comandos hacia/desde ficheros.
+-cd:
+Cambia el directorio en que nos encontramos por el indicado por el usuario.
 
-caracter #:
--a partir de donde aparezca dicho cortel se ignora todo lo que viene detrás.
+->, <, >>:
+Redirige la entrada y salida estándar de comandos hacia/desde ficheros.
 
-exit:
--termina el shell.
+Los métodos implementados para esta funcionalidad devuelven el FileDescriptor de estas operaciones, y así permitir que los comandos indicados puedan ponerse como entrada o salida, dependiendo del caso.
+
+>:
+
+Ejemplo: c1 > c2
+
+Se ejecuta c1 y se crea un archivo con el nombre de c2. Aquí se utilizan los siguientes Flags: O_WRONLY, O_TRUNC, O_CREAT.
+
+<:
+
+Ejemplo: c1 < c2
+
+Lee c2 y carga lo leído en c1. Aquí se utilizan los siguientes Flags: O_RDONLY.
+
+>>:
+
+Ejemplo: c1 >> c2
+
+Añade al texto del archivo de c2 el contenido de c1. Aquí se utilizan los siguientes Flagas: O_WRONLY, O_CREAT, O_APPEND.
+
+-caracter #:
+a partir de donde aparezca dicho caracter se ignora todo lo que viene detrás.
+
+-exit:
+termina el shell.
 
 
 
