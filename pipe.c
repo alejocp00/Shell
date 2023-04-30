@@ -8,18 +8,24 @@
 int pipes(Node *nodes)
 {
     int pipefd[2];
+    int pipefd2[2];
     pid_t pid;
+    pid_t pid2;
 
-    if (pipe(pipefd) == -1) {
+    if (pipe(pipefd) == -1||pipe(pipefd2) == -1) {
         perror("pipe");
         return 1;
     }
 
     pid = fork();
-    if (pid == -1) {
+    pid2 = fork();
+    if (pid == -1|| pid2 ==-1) {
         perror("fork");
         return 1;
     }
+    /////////////HERE
+
+
 
     // Child process executes first command
     if (pid == 0) {
