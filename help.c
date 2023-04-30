@@ -30,7 +30,7 @@ int help(int argc, char **argv)
        strcat(buffer, ".txt");
        file = fopen(buffer, "r");
        
-       /*if file is NULL it means that don't exist a file with the keyword indicated*/
+       /*if file is NULL it means that doesn't exist a file with the keyword indicated*/
        if(!file)
        {
         printf("Keyword no válida \n");
