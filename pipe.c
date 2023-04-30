@@ -3,8 +3,9 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include "node.h"
+#include "executor.h"
 
-int pipes(DataNode *nodes)
+int pipes(Node *nodes)
 {
     int pipefd[2];
     pid_t pid;

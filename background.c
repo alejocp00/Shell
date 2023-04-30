@@ -8,6 +8,7 @@
 #include "node.h"
 #include "list.h"
 
+
 list *background_process;
 
 /**
@@ -36,7 +37,6 @@ int background_func(int argc, char **argv)
     }
     return 0;
 }
-Builtins background_func_struct = {"&", background_func};
 
 
 /**
@@ -49,18 +49,12 @@ Builtins background_func_struct = {"&", background_func};
 int jobs(int argc, char **argv)
 { 
      pid_t pid=getpid();
-     pid_t pgid= getpgid(pid);
+     //pid_t pgid= getpgid(pid);
     printf("Background processes:\n");
-    pid_t p;
     // iterates over all possible process IDs
-    for (p = 1; p <= 65535; p++) {//65535 its the max number of process
-        // obtain the group ID for the process
-        pgid = getpgid(pid);
+    for (int p = 1; p <= background_process->size; p++) {
 
-        // if the pid its different from the group id, then its a background process
-        if (getpgid(p) == pgid && p != pid) {
-            printf("PID=%d",  p);
-        }
+        printf("PID=%d", GetValue(background_process,p));
     }
     return 0;
 }
@@ -92,14 +86,14 @@ int fg(int argc, char **argv)
 Builtins fg_struct = {"fg", fg};
 
 /**
- * @brief This method excecute the bg function
+ * @brief This method excecute the updating of the backgrounds process
  * 
  * @param argc 
  * @param argv 
  * @return int 
  */
 
-void my_sh_update_background() {
+void update_background(){
     int status;
 
     if (background_process->size > 0) {
