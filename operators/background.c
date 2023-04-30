@@ -5,8 +5,8 @@
 #include <sys/wait.h>
 #include <sys/types.h>
 #include "builtins.h"
-#include "node.h"
-#include "list.h"
+#include "REPL/node.h"
+#include "auxiliars/list.h"
 
 list *background_process;
 
@@ -29,10 +29,10 @@ int background_func(int argc, char **argv)
         execvp("programa", NULL); // Ejecutar programa en segundo plano////////////////
     }
     else if (pid > 0)
-    {   // Parent process
-        // printf("parent process executing...\n");
-        // waitpid(pid, NULL, WNOHANG); // wait for child to exit
-        // printf("child process finished.\n");
+    { // Parent process
+      // printf("parent process executing...\n");
+      // waitpid(pid, NULL, WNOHANG); // wait for child to exit
+      // printf("child process finished.\n");
     }
     else
     { // error ocurred

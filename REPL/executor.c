@@ -8,7 +8,7 @@
 #include "node.h"
 #include "executor.h"
 #include "ast.h"
-#include "structs.h"
+#include "auxiliars/structs.h"
 
 char *search_path(char *file)
 {

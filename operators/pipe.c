@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "node.h"
+#include "REPL/node.h"
 
 // int pipes(DataNode *nodes)
 // {
