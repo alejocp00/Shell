@@ -116,6 +116,14 @@ static inline void free_argv(int argc, char **argv)
     }
 }
 
+/**
+ * @brief Do a simple command
+ *
+ * @param node  The node of the AST to execute
+ * @param fd_in  The file descriptor of the input
+ * @param fd_out  The file descriptor of the output
+ * @return int  Return 0 if success, 1 if fail
+ */
 int do_simple_command(Node *node, int fd_in, int fd_out)
 {
     /*Init variables*/

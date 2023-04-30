@@ -158,13 +158,13 @@ void set_tree_values(Node *p, Node *l, Node *r)
 
     if (l)
     {
-        p->left_child = l;
-        l->parent = p;
+        p->ast_left_child = l;
+        l->ast_parent = p;
     }
 
     if (r)
     {
-        p->right_child = r;
-        r->parent = p;
+        p->ast_right_child = r;
+        r->ast_parent = p;
     }
 }

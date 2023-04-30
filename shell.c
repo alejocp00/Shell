@@ -23,7 +23,7 @@ int parse_and_execute(Source *src)
 
     DataNode *pre_ast;
 
-    /*If the token is valid, parse the token in to a Node*/
+    /*If the token is valid, parse the token into a Node*/
     while (tok && tok != &EOF_token)
     {
         Node *cmd = parse_simple_command(tok);
