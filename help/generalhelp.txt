@@ -25,3 +25,15 @@ fg: manda un proceso del background al foreground.
 true: retorna 0.
 false: retorna 1.
 
+Keywords válidas para ejecutar help:
+Si desea acceder a una de las ayudas específicas, a continuación las keywords válidas:
+-background
+-basics
+-chain
+-ctrl+c
+-help
+-history
+-if
+-multiif
+-multipipe
+-variables

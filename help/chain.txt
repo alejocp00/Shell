@@ -6,4 +6,19 @@ Es posible ejecutar varios comandos en la misma línea, uno detrás de otro en e
 Ejemplo: c1; c2; c3
 En este ejemplo primero se ejecuta c1, luego c2 y después c3, cada uno imprimiendo sus respectivas salidas.
 
+-Operador &&
 
+Ejemplo: c1 && c2 && c3
+
+Este operador funciona como el operador AND lógico en corto circuito.
+El comando c2 solo se ejecuta si el comando c1 tiene un exit satisfactorio. Lo mismo sucede con c3, el cual no se ejecuta si el c2 no tiene un exit satisfactorio.
+Si c1 retorna FALSE, entonces nunca se ejecuta c2.
+Si c1 y c2 retornan TRUE, entonces el valor de retorno será el valor de salida de c3.
+
+-Operador ||
+
+Ejemplo: c1 || c2 || c3
+
+Este operador funciona como el operador OR lógico en corto circuito.
+Si c1 tiene salida satisfactoria, no es necesario ejecutar c2. Si c1 falla, entonces se ejecuta c2.
+EL valor de retorno será el correspondiente al último comando que se ejecuta.
