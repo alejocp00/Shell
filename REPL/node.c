@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "node.h"
-#include "structs.h"
+#include "auxiliars/structs.h"
 
 /*Create a new node of the type indicated*/
 Node *new_node(Node_Type type)
@@ -158,13 +158,13 @@ void set_tree_values(Node *p, Node *l, Node *r)
 
     if (l)
     {
-        p->left_child = l;
-        l->parent = p;
+        p->ast_left_child = l;
+        l->ast_parent = p;
     }
 
     if (r)
     {
-        p->right_child = r;
-        r->parent = p;
+        p->ast_right_child = r;
+        r->ast_parent = p;
     }
 }

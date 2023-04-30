@@ -35,7 +35,7 @@ int do_simple_command(Node *node, int fd_in, int fd_out);
  * @param argc The number of arguments
  * @param argv The arguments
  */
-void get_params(Node *child, int *argc, char **argv);
+int get_params(Node *child, int *argc, char **argv);
 
 /**
  * @brief Execute the AST

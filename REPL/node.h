@@ -112,19 +112,19 @@ typedef struct node
      * @brief The parent node
      *
      */
-    struct node *parent;
+    struct node *ast_parent;
 
     /**
      * @brief The left node
      *
      */
-    struct node *left_child;
+    struct node *ast_left_child;
 
     /**
      * @brief The right node
      *
      */
-    struct node *right_child;
+    struct node *ast_right_child;
 } Node;
 
 /**

@@ -54,15 +54,15 @@ void push(DataNode *stack, Node *value)
  * @param stack The stack
  * @return Node* The value of the node
  */
-Node *pop(DataNode *stack)
+Node *pop(DataNode **stack)
 {
-    if (!stack || stack->value == NULL)
+    if ((*stack) == NULL || (*stack)->value == NULL)
     {
         return NULL;
     }
-    Node *value = stack->value;
-    DataNode *aux = stack;
-    stack = stack->next;
+    Node *value = (*stack)->value;
+    DataNode *aux = *stack;
+    *stack = (*stack)->next;
     free(aux);
     return value;
 }
@@ -88,7 +88,6 @@ void enqueue(DataNode *queue, Node *value)
     {
         return;
     }
-
     DataNode *aux = queue;
 
     while (aux->next)
@@ -105,15 +104,15 @@ void enqueue(DataNode *queue, Node *value)
  * @param queue The queue
  * @return Node* The value of the node
  */
-Node *dequeue(DataNode *queue)
+Node *dequeue(DataNode **queue)
 {
-    if (!queue || queue->value == NULL)
+    if ((*queue) == NULL || (*queue)->value == NULL)
     {
         return NULL;
     }
-    Node *value = queue->value;
-    DataNode *aux = queue;
-    queue = queue->next;
+    Node *value = (*queue)->value;
+    DataNode *aux = *queue;
+    *queue = (*queue)->next;
     free(aux);
     return value;
 }
@@ -135,7 +134,7 @@ void *shunting_yard(DataNode *operations)
     }
     DataNode *operator_stack = NULL;
     DataNode *output_queue = NULL;
-    Node *current_node = dequeue(operations);
+    Node *current_node = dequeue(&operations);
 
     /*Loop*/
     while (current_node != NULL)
@@ -156,19 +155,25 @@ void *shunting_yard(DataNode *operations)
                 // In operator precedence lower that the top of the stack. Proceed to pop all the stack
                 if (current_node->val_info.precedence < operator_stack->value->val_info.precedence)
                     while (operator_stack->value != NULL)
-                        enqueue(output_queue, pop(operator_stack));
+                        enqueue(output_queue, pop(&operator_stack));
                 // Add the operator to the stack
                 push(operator_stack, current_node);
             }
         }
-        current_node = dequeue(operations);
+        current_node = dequeue(&operations);
     }
     // Copy all the output_queue to the operations queue
-    for (current_node = dequeue(output_queue); current_node != NULL; current_node = dequeue(output_queue))
-        enqueue(operations, current_node);
+    for (current_node = dequeue(&output_queue); current_node != NULL; current_node = dequeue(&output_queue))
+        if (!operations)
+            operations = new_data_node(current_node);
+        else
+            enqueue(operations, current_node);
     // Copy all the operator_stack to the operations queue
-    for (current_node = pop(operator_stack); current_node != NULL; current_node = pop(operator_stack))
-        enqueue(operations, current_node);
+    for (current_node = pop(&operator_stack); current_node != NULL; current_node = pop(&operator_stack))
+        if (!operations)
+            operations = new_data_node(current_node);
+        else
+            enqueue(operations, current_node);
 }
 
 /**
@@ -189,7 +194,7 @@ Node *build_ast(DataNode *shunting_yard_result)
 
     DataNode *command_stack = NULL;
     DataNode *operator_stack = NULL;
-    Node *current_node = dequeue(shunting_yard_result);
+    Node *current_node = dequeue(&shunting_yard_result);
 
     int command_stack_size = 0;
     int operator_stack_size = 0;
@@ -216,8 +221,8 @@ Node *build_ast(DataNode *shunting_yard_result)
 
             if (command_stack_size >= 2)
             {
-                Node *right_child = pop(command_stack);
-                Node *left_child = pop(command_stack);
+                Node *right_child = pop(&command_stack);
+                Node *left_child = pop(&command_stack);
 
                 set_tree_values(current_node, left_child, right_child);
 
@@ -227,8 +232,8 @@ Node *build_ast(DataNode *shunting_yard_result)
             }
             else if (command_stack_size == 1)
             {
-                Node *right_child = pop(command_stack);
-                Node *left_child = pop(operator_stack);
+                Node *right_child = pop(&command_stack);
+                Node *left_child = pop(&operator_stack);
 
                 set_tree_values(current_node, left_child, right_child);
 
@@ -237,8 +242,8 @@ Node *build_ast(DataNode *shunting_yard_result)
             }
             else
             {
-                Node *right_child = pop(operator_stack);
-                Node *left_child = pop(operator_stack);
+                Node *right_child = pop(&operator_stack);
+                Node *left_child = pop(&operator_stack);
 
                 set_tree_values(current_node, left_child, right_child);
 
@@ -246,8 +251,9 @@ Node *build_ast(DataNode *shunting_yard_result)
                 command_stack_size--;
             }
         }
-        current_node = dequeue(shunting_yard_result);
+        current_node = dequeue(&shunting_yard_result);
     }
-
-    return pop(operator_stack);
+    if (operator_stack_size == 0)
+        return pop(&command_stack);
+    return pop(&operator_stack);
 }

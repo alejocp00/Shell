@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "scanner.h"
-#include "structs.h"
+#include "auxiliars/structs.h"
 
 /*Indicates the end of the input*/
 Token EOF_token = {
@@ -12,6 +12,7 @@ Token EOF_token = {
 char *buffer = NULL;
 int buf_size = 0;
 int buf_index = -1;
+bool read_command = true;
 
 /*Auxiliar Functions*/
 
@@ -110,6 +111,8 @@ Token *tokenize(Source *source)
 
     do
     {
+        bool add_next;
+
         /*The deciding what to do*/
         switch (next)
         {
@@ -139,31 +142,31 @@ Token *tokenize(Source *source)
         case ('>'):
         case ('|'):
             // Searching for the double char operators
-            if (peek_next_char(source) == next)
-            {
-                if (buf_index > 0)
-                {
-                    unget_char(source);
-                    return &EOF_token;
-                }
-                else
-                {
-                    add_to_buffer(next);
-                    add_to_buffer(get_next_char(source));
-                }
-                end = true;
-                break;
-            }
+            add_next = peek_next_char(source) == next;
         case (';'):
         case ('<'):
             // Checking if we are creating a command token instated
-            if (buf_index > 0)
+            if (buf_index > 0 || read_command)
             {
+                unget_char(source);
+                read_command = false;
+                return &EOF_token;
+            }
+            add_to_buffer(next);
+            if (add_next)
+            {
+                add_next = false;
+                add_to_buffer(get_next_char(source));
+            }
+            end = true;
+            break;
+        default:
+            if (!read_command)
+            {
+                read_command = true;
                 unget_char(source);
                 return &EOF_token;
             }
-            end = true;
-        default:
             add_to_buffer(next);
             break;
         }
