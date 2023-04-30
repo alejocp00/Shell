@@ -1,67 +1,73 @@
 #include <unistd.h>
 #include <stdio.h>
-#include "built-ins/builtins.h"
+#include <fcntl.h>
+#include "node.h"
 
 /**
- * @brief This method execute the > function
+ * @brief This method excecute the > function
  *
  * @param argc
  * @param argv
  * @return int
  */
-int retofile(int argc, char **argv)
+int retofile(Node *argv)
 {
-  FILE *fp;
-  fp = fopen(argv[1], "w+");
-  fprintf(fp, "%s", argv[0]);
-  fclose(fp);
-}
-Builtins retofile_struct = {">", retofile};
-/**
- * @brief This method execute the >> function
- *
- * @param argc
- * @param argv
- * @return int
- */
-int retofileap(int argc, char **argv)
-{
-  FILE *fp;
-
-  fp = fopen(argv[1], "a");
-
-  if (fp == NULL)
-  {
-    return 1;
+  char *end_ptr = 0;
+  int fd = (int)strtol(argv->right_child, &end_ptr, 10); // try to convert to int the file name
+  if (*(end_ptr + 1) != '\0')
+  { // if the convert is not succesfull then take as a file descriptor the value of the open function
+    fd = open(argv->right_child, O_WRONLY | O_TRUNC | O_CREAT, 0600);
   }
-
-  // fprintf(fp, argv[0]);
-
-  fclose(fp);
-
+  pid_t pid = fork();
+  if (pid == 0)
+  {
+    if (dup2(fd, STDOUT_FILENO) == -1)
+    { // Redirect the output
+      perror("Redirect Error");
+      return 1;
+    }
+    execute_ast(argv->left_child); // Excecute the left Node command
+  }
   return 0;
 }
-Builtins retofileap_struct = {">>", retofileap};
+
 /**
- * @brief This method execute the < function
+ * @brief This method excecute the >> function
  *
  * @param argc
  * @param argv
  * @return int
  */
-int refromfile(int argc, char **argv) // como entrarselo a la otra función
+int retofileap(Node *argv)
 {
-  FILE *fp;
-
-  fp = fopen(argv[1], "r");
-
-  if (fp == NULL)
+  char *end_ptr = 0;
+  int fd = (int)strtol(argv->right_child, &end_ptr, 10);
+  if (*(end_ptr + 1) != '\0')
   {
-    return 1;
+    fd = open(argv->right_child, O_WRONLY | O_APPEND | O_CREAT, 0600);
   }
+  return fd;
+}
 
-  fclose(fp);
+/**
+ * @brief This method excecute the < function
+ *
+ * @param argc
+ * @param argv
+ * @return int
+ */
+int refromfile(Node *argv)
+{
+  char *end_ptr = 0;
+  // int fd = open(argv->right_child, O_WRONLY | O_APPEND  | O_CREAT, 0600);
+  int fd = (int)strtol(argv->right_child, &end_ptr, 10);
+  if (*(end_ptr + 1) != '\0')
+  {
+    fd = open(argv->right_child, O_RDONLY);
+  }
+  return fd;
+}
 
-  return 0;
+return 0;
 }
 Builtins refromfile_struct = {"<", refromfile};

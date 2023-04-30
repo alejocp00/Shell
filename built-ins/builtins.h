@@ -1,6 +1,6 @@
 #ifndef BUILTINS_H
 #define BUILTINS_H
-#include<stdio.h>
+#include <stdio.h>
 
 /*Structure for helping manage the builtins*/
 typedef struct builtins
@@ -10,7 +10,7 @@ typedef struct builtins
 
     /*function*/
     int (*function)(int argc, char **argv);
-}Builtins;
+} Builtins;
 
 /*Array as storage of all the builtins*/
 extern Builtins builtins[];
