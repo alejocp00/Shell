@@ -1,1 +1,9 @@
-(no se ha implementado chain)
+**chain**
+
+-Operador ;
+Es posible ejecutar varios comandos en la misma línea, uno detrás de otro en el orden en que aparecen.
+
+Ejemplo: c1; c2; c3
+En este ejemplo primero se ejecuta c1, luego c2 y después c3, cada uno imprimiendo sus respectivas salidas.
+
+

@@ -1,1 +1,9 @@
-(No se ha implementado background)
+**background**
+
+El operador & permite tener procesos en el background.
+Para la implementación de la función background se crea un proceso con un fork para crear un proceso en segundo plano, que será añadido a una lista de procesos en segundo plano.
+
+El comando jobs lista todos los procesos que están en el background.
+Para la implementación de dicho comando, se recorre un arreglo que contiene todos los procesos que están en segundo plano y se muestra sus pid.
+
+El comando fg puede recibir un o ningún parámetro. En caso de recibir un parámetro (un pid) entonces envía el proceso con dicho pid hacia el foreground. En caso de no recibir nada, entonces se envía el últimpo proceso que fue a background hacia foreground.

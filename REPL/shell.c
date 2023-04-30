@@ -14,6 +14,7 @@ int parse_and_execute(Source *src)
 {
     /*Skipping starting blanks*/
     skip_blanks(src);
+    
 
     Token *tok = tokenize(src);
     if (tok == &EOF_token)

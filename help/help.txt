@@ -1,1 +1,9 @@
-(no se ha implementado help)
+**help**
+
+El comando help muestra la ayuda general, donde se especifican detalles del proyecto: integrantes, grupo, así como las funcionalidades implementadas, su valor, la puntuación total y los built-in implementados.
+
+Si al comando help se le agrega una keyword, entonces imprimirá la ayuda específica de la funcionalidad que representa dicha keyword. Solo se puede mostrar la ayuda de una funcionalidad a la vez, es decir, dos keyword no es válido para help.
+
+Ejemplo: 'help basics'
+
+En la implementación se lee la keyword acompañante al comando y, en dependencia de la keyword en cuestión, se accede al archivo .txt correspondiente, en caso de que no exista una keyword, se accede al archivo de la ayuda general que mostrará los detalles del proyecto anteriormente mencionados.

@@ -13,10 +13,11 @@ int print_file_text(FILE *file)
 }
 
 /*help function indicates and prints which file to read depending on the keyword*/
-int help(char *keyword)
+int help(int argc, char **argv)
 {
     FILE *file;
     int c = 0;
+    char *keyword = argv[0];
     /*if keyword is NULL, then it prints generalhelp file*/
     if(!keyword)
     {
@@ -29,7 +30,7 @@ int help(char *keyword)
        strcat(buffer, ".txt");
        file = fopen(buffer, "r");
        
-       /*if file is NULL it means that don't exist a file with the keyword indicated*/
+       /*if file is NULL it means that doesn't exist a file with the keyword indicated*/
        if(!file)
        {
         printf("Keyword no válida \n");
