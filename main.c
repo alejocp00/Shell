@@ -7,10 +7,12 @@
 #include "./auxiliars/structs.h"
 #include "./REPL/shell.h"
 #include "./operators/operators.h"
+#include "auxiliars/list.h"
 
 char *current_path = NULL;
 int shell_pid;
 int last_pid;
+int history_size;
 
 void ctrl_c()
 {
@@ -18,7 +20,6 @@ void ctrl_c()
 
     if (current_pid == shell_pid)
     {
-        printf("\n");
         print_prompt();
         return;
     }
@@ -39,14 +40,18 @@ void ctrl_c()
 
 int main(int argc, char **argv)
 {
-    current_path = getcwd(current_path, 1024);
-    shell_pid = getpid();
     char *cmd;
 
+    shell_pid = getpid();
     signal(SIGINT, ctrl_c);
+    history_size = init_history_size();
+
+    background_process = NewList();
 
     do
     {
+        current_path = getcwd(current_path, 1024);
+
         print_prompt();
         /*READ*/
         cmd = read_cmd();

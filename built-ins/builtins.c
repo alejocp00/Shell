@@ -12,3 +12,5 @@ Builtins builtins_array[] =
         {"jobs", jobs},
         {"history", history},
 };
+
+int builtins_count = 9;

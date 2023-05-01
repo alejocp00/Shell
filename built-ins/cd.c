@@ -3,5 +3,5 @@
 
 int cd(int argc, char **argv)
 {
-    return chdir(argv[0]);
+    return chdir(argv[1]);
 }
