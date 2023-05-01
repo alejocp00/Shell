@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <fcntl.h>
-#include "node.h"
+#include "../REPL/node.h"
 
 /**
  * @brief This method excecute the > function
@@ -17,19 +17,22 @@ int retofile(Node *argv)
   { // if the convert is not succesfull then take as a file descriptor the value of the open function
     fd = open(argv->ast_right_child, O_WRONLY | O_TRUNC | O_CREAT, 0600);
   }
-  int pid=fork();
-  if(pid==0){
+  int pid = fork();
+  if (pid == 0)
+  {
     if (dup2(fd, STDOUT_FILENO) == -1)
     { // Redirect the output
       perror("Redirect Error");
       return 1;
     }
-    if(execute_ast(argv->ast_left_child)==1){ // Excecute the left node command
+    if (execute_ast(argv->ast_left_child) == 1)
+    { // Excecute the left node command
       return 1;
     }
   }
-  else {
-     waitpid(pid, NULL, 0);
+  else
+  {
+    waitpid(pid, NULL, 0);
   }
   return 0;
 }
@@ -48,20 +51,23 @@ int retofileap(Node *argv)
   {
     fd = open(argv->ast_right_child, O_WRONLY | O_APPEND | O_CREAT, 0600);
   }
-   
-    int pid=fork();
-    if(pid==0){
-   if (dup2(fd, STDOUT_FILENO) == -1)
+
+  int pid = fork();
+  if (pid == 0)
+  {
+    if (dup2(fd, STDOUT_FILENO) == -1)
     { // Redirect the output
       perror("Redirect Error");
       return 1;
     }
-    if(execute_ast(argv->ast_left_child)==1){ // Excecute the left node command
+    if (execute_ast(argv->ast_left_child) == 1)
+    { // Excecute the left node command
       return 1;
     }
   }
-  else {
-     waitpid(pid, NULL, 0);
+  else
+  {
+    waitpid(pid, NULL, 0);
   }
   return 0;
 }
@@ -81,19 +87,22 @@ int refromfile(Node *argv)
   {
     fd = open(argv->ast_right_child, O_RDONLY);
   }
-   int pid=fork();
-  if(pid==0){
-  if (dup2(fd, STDIN_FILENO) == -1)
+  int pid = fork();
+  if (pid == 0)
+  {
+    if (dup2(fd, STDIN_FILENO) == -1)
     { // Redirect the output
       perror("Redirect Error");
       return 1;
     }
-    if(execute_ast(argv->ast_left_child)==1){ // Excecute the left node command
+    if (execute_ast(argv->ast_left_child) == 1)
+    { // Excecute the left node command
       return 1;
     }
   }
-  else {
-     waitpid(pid, NULL, 0);
+  else
+  {
+    waitpid(pid, NULL, 0);
   }
   return 0;
 }

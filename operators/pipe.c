@@ -2,8 +2,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <sys/wait.h>
-#include "node.h"
-#include "executor.h"
+#include "../REPL/node.h"
+#include "../REPL/executor.h"
 
 int pipes(Node *nodes)
 {
