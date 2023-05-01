@@ -24,11 +24,11 @@ int background_func(Node *argv)
 
     if (pid == 0)// Child process
     { 
-        // exit();
+        PushEnd(background_process, pid); // Add to the background process list
     }
     else if (pid > 0)
     {                                     // Parent process
-        PushEnd(background_process, pid); // Add to the background process list
+       return 0;
     }
     else
     { // error ocurred
@@ -105,8 +105,6 @@ Builtins fg_struct = {"fg", fg};
 /**
  * @brief This method excecute the updating of the backgrounds process
  *
- * @param argc
- * @param argv
  * @return int
  */
 

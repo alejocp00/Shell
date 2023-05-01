@@ -17,36 +17,12 @@ int pipes(Node *nodes)
         perror("pipe");
         return 1;
     }
+    int status1= execute_ast(nodes->ast_left_child,pipefd[0],pipefd2[1]);
+    int status2= execute_ast(nodes->ast_right_child,pipefd2[0],pipefd[1]);
 
-    pid = fork();
-    pid2 = fork();
-    if (pid == -1 || pid2 == -1)
+    if(status1==0&&status2==0)
     {
-        perror("fork");
-        return 1;
-    }
-    /////////////HERE
-
-    // Child process executes first command
-    if (pid == 0)
-    {
-
-        close(pipefd[0]);               // Close unused read end
-        dup2(pipefd[1], STDOUT_FILENO); // Redirect stdout to pipe
-        close(pipefd[1]);               // Close write end
-        perror("command");
-        return 1;
-    }
-
-    // Parent process executes second command
-    else
-    {
-
-        close(pipefd[1]);              // Close unused write end
-        dup2(pipefd[0], STDIN_FILENO); // Redirect stdin from pipe
-        close(pipefd[0]);              // Close read end
-        perror("command");
-        return 1;
-    }
     return 0;
+    }
+    else{return 1;}
 }
