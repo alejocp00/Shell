@@ -10,6 +10,7 @@
 #include "ast.h"
 #include "../auxiliars/structs.h"
 #include "../operators/operators.h"
+#include "../built-ins/builtins.h"
 
 char *search_path(char *file)
 {
@@ -150,6 +151,18 @@ int do_simple_command(Node *node, int fd_in, int fd_out)
     pid_t child_pid = 0;
     int status = 0;
 
+    for (int i = 0; i < builtins_count - 3; i++)
+    {
+        if (strcmp(argv[0], builtins_array[i].builtin_name) == 0)
+        {
+            if (fd_in != -1)
+                close(fd_in);
+            if (fd_out != -1)
+                close(fd_out);
+
+            return builtins_array[0].function(argc, argv);
+        }
+    }
     if ((child_pid = fork()) == 0)
     {
 
@@ -165,7 +178,15 @@ int do_simple_command(Node *node, int fd_in, int fd_out)
             close(fd_out);
         }
 
-        do_exec_cmd(argc, argv);
+        for (int i = builtins_count - 3; i < builtins_count; i++)
+        {
+            if (strcmp(node->first_child->value.str, builtins_array[i].builtin_name) == 0)
+            {
+                return builtins_array[i].function(argc, argv);
+            }
+        }
+
+        return do_exec_cmd(argc, argv);
         fprintf(stderr, "error: failed to execute command: %s\n",
                 strerror(errno));
         if (errno == ENOEXEC)
@@ -247,6 +268,7 @@ int execute_ast(Node *ast, int fd_in, int fd_out)
     {
         return 0;
     }
+
     if (ast->type == NODE_COMMAND)
     {
         return do_simple_command(ast, fd_in, fd_out);
