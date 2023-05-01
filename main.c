@@ -6,6 +6,7 @@
 #include <sys/signal.h>
 #include "./auxiliars/structs.h"
 #include "./REPL/shell.h"
+#include "./operators/operators.h"
 
 char *current_path = NULL;
 int shell_pid;
@@ -67,6 +68,7 @@ int main(int argc, char **argv)
         parse_and_execute(&src);
         free(cmd);
 
+        update_background();
         /*LOOP*/
     } while (1);
     exit(EXIT_SUCCESS);
