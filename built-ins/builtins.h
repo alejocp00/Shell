@@ -5,7 +5,7 @@
 /*Structure for helping manage the builtins*/
 typedef struct builtins
 {
-    /*builting's name*/
+    /*builtins name*/
     char *builtin_name;
 
     /*function*/
