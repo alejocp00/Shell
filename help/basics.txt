@@ -37,6 +37,12 @@ Añade al texto del archivo de c2 el contenido de c1. Aquí se utilizan los sigu
 -caracter |
 El operador | permite redirigir la salida de un comando hacia la entrada de otro.
 
+Ejemplo: c1| c2
+
+La salida de c1 se redirige a la entrada de c2.
+
+Para su implementación, la función recibe un nodo, con hijo izuierdo y derecho, se cogen los FileDescriptor, se redirije la salida del nodo izquierdo a la entrada del nodo derecho y se manda a ejecutar los comandos de ambos nodos.
+
 -caracter #:
 a partir de donde aparezca dicho caracter se ignora todo lo que viene detrás.
 

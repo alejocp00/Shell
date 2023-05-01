@@ -1,1 +1,5 @@
-(no se ha implementado multipipe)
+**multipipe**
+
+Ejemplo: c1 | c2 | c3
+
+Multipipe en la implementación realizada va de la mano a Pipe. La idea que se siguió fue la siguiente: A medida q se van ejecutando las operaciones de el hijo izquierdo e hijo derecho de los nodos estos van generando las redirecciones de los pipes haciendo función de multipipe como si fuera una función de pipe recursiva.
