@@ -5,6 +5,7 @@
 #include "ast.h"
 #include "executor.h"
 #include "../built-ins/builtins.h"
+#include "../auxiliars/structs.h"
 
 void print_prompt()
 {
@@ -16,8 +17,20 @@ int parse_and_execute(Source *src)
     /*Skipping starting blanks*/
     skip_blanks(src);
 
+    /*Check for again*/
+    bool again = true;
+    char *again_str = "again";
+    for (int i = 0; i < 5; i++)
+    {
+        if (again_str[i] != src->in_text[i])
+        {
+            again = false;
+        }
+    }
+
     /*Adding the command to the history*/
-    add_to_history(src->in_text);
+    if (!again)
+        add_to_history(src->in_text);
 
     Token *tok = tokenize(src);
     if (tok == &EOF_token)
@@ -47,8 +60,9 @@ int parse_and_execute(Source *src)
     shunting_yard(pre_ast);
     Node *ast = build_ast(pre_ast);
 
-    execute_ast(ast, -1, -1);
-    return 1;
+    int status = execute_ast(ast, -1, -1);
+    free_ast(ast);
+    return status;
 }
 
 char *read_cmd(void)
@@ -104,4 +118,30 @@ char *read_cmd(void)
     }
 
     return ptr;
+}
+
+int init_history_size()
+{
+    int read_size = 1030;
+
+    /*count of the lines*/
+    int count = 0;
+
+    /*max lines of history that it will showed*/
+    int max_lines = 10;
+
+    /*stores the string of each line to read*/
+    char text_string[read_size];
+
+    FILE *file = fopen("./history/history.txt", "r");
+
+    /*puts the cursor at the beginning of the file*/
+    rewind(file);
+
+    while (fgets(text_string, 1030, file))
+    {
+        count++;
+    }
+    fclose(file);
+    return count;
 }
