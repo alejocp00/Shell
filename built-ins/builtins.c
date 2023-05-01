@@ -9,5 +9,6 @@ Builtins builtins []=
     {"true", true_b},
     {"false", false_b},
     {"jobs", jobs},
-    {"fg", fg}
+    {"fg", fg},
+    {"exit", exit_b}
 };

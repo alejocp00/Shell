@@ -50,4 +50,7 @@ int jobs(int argc, char **argv);
 /*fg function*/
 int fg(int argc, char **argv);
 
+/*exit function*/
+int exit_b(int argc, char **argv);
+
 #endif
