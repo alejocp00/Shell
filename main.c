@@ -3,19 +3,50 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/signal.h>
 #include "./auxiliars/structs.h"
 #include "./REPL/shell.h"
 
 char *current_path = NULL;
+int shell_pid;
+int last_pid;
+
+void ctrl_c()
+{
+    int current_pid = getpid();
+
+    if (current_pid == shell_pid)
+    {
+        printf("\n");
+        print_prompt();
+        return;
+    }
+
+    if (current_pid == last_pid)
+    {
+        kill(current_pid, SIGKILL);
+    }
+    else
+    {
+        kill(current_pid, SIGINT);
+    }
+
+    last_pid = current_pid;
+
+    printf("\n");
+}
 
 int main(int argc, char **argv)
 {
     current_path = getcwd(current_path, 1024);
+    shell_pid = getpid();
     char *cmd;
+
+    signal(SIGINT, ctrl_c);
+
     do
     {
         print_prompt();
-
         /*READ*/
         cmd = read_cmd();
         if (!cmd)

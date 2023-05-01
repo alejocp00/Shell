@@ -13,6 +13,9 @@
 #define ANSI_COLOR_RESET "\x1b[0m"
 #define SHELL_NAME "MyShell"
 
+/*The pid of the shell*/
+extern int shell_pid;
+
 /*The current path*/
 extern char *current_path;
 
