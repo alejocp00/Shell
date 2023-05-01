@@ -5,7 +5,7 @@
 #include "../REPL/node.h"
 #include "../REPL/executor.h"
 
-int pipes(Node *nodes)
+int pipes(Node *nodes,int fd_in,int fd_out)
 {
     int pipefd[2];
     int pipefd2[2];

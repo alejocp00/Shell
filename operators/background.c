@@ -18,7 +18,7 @@ list *background_process;
  * @param argv
  * @return int
  */
-int background_func(Node *argv)
+int background_func(Node *argv,int fd_in,int fd_out)
 {
     pid_t pid;
     pid = fork();
@@ -54,10 +54,11 @@ int jobs(int argc, char **argv)
     for (int p = 1; p <= background_process->size; p++)
     { // iterates over all possible process IDs
 
-        printf("PID=%d", GetValue(background_process, p));
+        printf("PID=%d",*(int*)(GetValue(background_process, p)));
     }
     return 0;
 }
+Builtins jobs_struct = {"jobs", jobs};
 
 /**
  * @brief This method excecute the fg function
@@ -77,7 +78,7 @@ int fg(int argc, char **argv)
             printf("No background process");
             return 1;
         }
-        pid_t recentProcess = GetValue(background_process, background_process->size - 1);
+        pid_t recentProcess = *(int*)(GetValue(background_process, background_process->size - 1));
         do
         {
             waitpid(recentProcess, &status, WUNTRACED); // wait for the process to finish
@@ -87,7 +88,7 @@ int fg(int argc, char **argv)
 
     else
     {
-        if (GetValue(background_process, pid) == NULL)
+        if (*(int*)(GetValue(background_process, pid))== NULL)
         { // if the process is not in the list
             printf("Process not found");
             return 1;
@@ -116,10 +117,10 @@ void update_background()
     {
         for (int i = 0; i < background_process->size; ++i)
         {
-            waitpid(GetValue(background_process, i), &status, WNOHANG);
+            waitpid(*(int*)(GetValue(background_process, i)), &status, WNOHANG);
             if (WIFEXITED(status))
             {
-                printf("[%d]\tDone\t%d\n", i + 1, GetValue(background_process, i));
+                printf("[%d]\tDone\t%d\n", i + 1, *(int*)(GetValue(background_process, i)));
                 DeleteValue(background_process, i);
                 i = -1;
             }

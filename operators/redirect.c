@@ -9,7 +9,7 @@
  * @param argv
  * @return int
  */
-int retofile(Node *argv)
+int retofile(Node *argv,int fd_in,int fd_out)
 {
   char *end_ptr = 0;
   int fd = (int)strtol(argv->ast_right_child, &end_ptr, 10); // try to convert to int the file name
@@ -43,7 +43,7 @@ int retofile(Node *argv)
  * @param argv
  * @return int
  */
-int retofileap(Node *argv)
+int retofileap(Node *argv,int fd_in,int fd_out)
 {
   char *end_ptr = 0;
   int fd = (int)strtol(argv->ast_right_child, &end_ptr, 10);
@@ -78,7 +78,7 @@ int retofileap(Node *argv)
  * @param argv
  * @return int
  */
-int refromfile(Node *argv)
+int refromfile(Node *argv,int fd_in,int fd_out)
 {
   char *end_ptr = 0;
   // int fd = open(argv->right_child, O_WRONLY | O_APPEND  | O_CREAT, 0600);

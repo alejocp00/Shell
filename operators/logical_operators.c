@@ -16,7 +16,7 @@
  * @return int
  */
 
-int or_func(Node *argv)
+int or_func(Node *argv,int fd_in,int fd_out)
 {
 
     if (execute_ast(argv->ast_left_child) == 0)
@@ -40,7 +40,7 @@ int or_func(Node *argv)
  * @return int
  */
 
-int and_func(Node *argv)
+int and_func(Node *argv,int fd_in,int fd_out)
 {
 
     if (execute_ast(argv->ast_left_child) == 1)
@@ -64,7 +64,7 @@ int and_func(Node *argv)
  * @return int
  */
 
-int semicolon_func(Node *argv)
+int semicolon_func(Node *argv,int fd_in,int fd_out)
 {
     execute_ast(argv->ast_left_child);  // Excecute the left node command
     execute_ast(argv->ast_right_child); // Excecute the right node command
