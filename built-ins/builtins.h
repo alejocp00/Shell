@@ -13,7 +13,7 @@ typedef struct builtins
 } Builtins;
 
 /*Array as storage of all the builtins*/
-extern Builtins builtins[];
+extern Builtins builtins_array[];
 
 /*Amount of builtins*/
 extern int builtins_count;

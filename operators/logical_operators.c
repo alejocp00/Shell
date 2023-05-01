@@ -7,6 +7,7 @@
 #include "builtins.h"
 #include "../REPL/node.h"
 #include "../auxiliars/list.h"
+#include "operators.h"
 
 /**
  * @brief This method excecute the || function

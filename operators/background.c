@@ -4,9 +4,10 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include "builtins.h"
-#include "REPL/node.h"
-#include "auxiliars/list.h"
+#include "../built-ins/builtins.h"
+#include "../REPL/node.h"
+#include "../auxiliars/list.h"
+#include "operators.h"
 
 list *background_process;
 
@@ -22,13 +23,13 @@ int background_func(Node *argv)
     pid_t pid;
     pid = fork();
 
-    if (pid == 0)// Child process
-    { 
+    if (pid == 0) // Child process
+    {
         PushEnd(background_process, pid); // Add to the background process list
     }
     else if (pid > 0)
-    {                                     // Parent process
-       return 0;
+    { // Parent process
+        return 0;
     }
     else
     { // error ocurred
@@ -100,7 +101,6 @@ int fg(int argc, char **argv)
 
     return 0;
 }
-Builtins fg_struct = {"fg", fg};
 
 /**
  * @brief This method excecute the updating of the backgrounds process
