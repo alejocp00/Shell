@@ -1,3 +1,5 @@
 **ctrl+c**
 
 Al presionar 'ctrl+c' el proceso actual que se está ejecutando debe detenerse.
+
+En la implementación primero se manda la señal SIGINT, si se presiona ctrl+c por segunda vez, entonces se mada la señal SIGKILL.

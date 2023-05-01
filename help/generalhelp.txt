@@ -13,7 +13,7 @@ chain: operadores para encadenar comandos (0.5 puntos)
 help: imprime la ayuda (1 punto)
 
 
-Cantidad de puntos: 5.5
+Cantidad de puntos: 7.5
 
 Built-in:
 cd: permite cambiar de directorio
@@ -24,6 +24,7 @@ jobs: lista todos los procesos que están corriendo en el background.
 fg: manda un proceso del background al foreground.
 true: retorna 0.
 false: retorna 1.
+exit: termina el programa
 
 Keywords válidas para ejecutar help:
 Si desea acceder a una de las ayudas específicas, a continuación las keywords válidas:

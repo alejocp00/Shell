@@ -3,8 +3,10 @@
 -Operador ;
 Es posible ejecutar varios comandos en la misma línea, uno detrás de otro en el orden en que aparecen.
 
+Para la implementación, a la función se le pasa un nodo con sus dos hijos, se ejecuta el primero y luego el segundo (sin importar si tuvo éxito o no).
+
 Ejemplo: c1; c2; c3
-En este ejemplo primero se ejecuta c1, luego c2 y después c3, cada uno imprimiendo sus respectivas salidas.
+En este ejemplo primero se ejecuta c1, luego c2 y después c3.
 
 -Operador &&
 
@@ -15,6 +17,8 @@ El comando c2 solo se ejecuta si el comando c1 tiene un exit satisfactorio. Lo m
 Si c1 retorna FALSE, entonces nunca se ejecuta c2.
 Si c1 y c2 retornan TRUE, entonces el valor de retorno será el valor de salida de c3.
 
+Para la implementación se siguió la misma idea, la función recibe un nodo, del cual se ejecuta primero su hijo izquierdo, y solo si tuvo éxito se ejecuta el hijo derecho.
+
 -Operador ||
 
 Ejemplo: c1 || c2 || c3
@@ -22,3 +26,4 @@ Ejemplo: c1 || c2 || c3
 Este operador funciona como el operador OR lógico en corto circuito.
 Si c1 tiene salida satisfactoria, no es necesario ejecutar c2. Si c1 falla, entonces se ejecuta c2.
 EL valor de retorno será el correspondiente al último comando que se ejecuta.
+De forma parecida, la iplementación para el operador || se basó en una función que recibe un nodo, del cual se ejecuta primero su hijo izquierdo, si tiene éxito se retornará y no se ejecutará el hijo derecho. Si falla, entonces se ejecuta el hijo derecho.
