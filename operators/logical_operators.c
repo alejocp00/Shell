@@ -7,6 +7,7 @@
 #include "../built-ins/builtins.h"
 #include "../REPL/node.h"
 #include "../auxiliars/list.h"
+#include "../REPL/executor.h"
 #include "operators.h"
 
 /**
@@ -16,16 +17,16 @@
  * @return int
  */
 
-int or_func(Node *argv,int fd_in,int fd_out)
+int or_func(Node *argv, int fd_in, int fd_out)
 {
 
-    if (execute_ast(argv->ast_left_child) == 0)
+    if (execute_ast(argv->ast_left_child, fd_in, fd_out) == 0)
     { // Excecute the left node command
         return 0;
     }
     else
     {
-        if (execute_ast(argv->ast_right_child) == 0)
+        if (execute_ast(argv->ast_right_child, fd_in, fd_out) == 0)
         { // Excecute the right node command
             return 0;
         }
@@ -40,16 +41,16 @@ int or_func(Node *argv,int fd_in,int fd_out)
  * @return int
  */
 
-int and_func(Node *argv,int fd_in,int fd_out)
+int and_func(Node *argv, int fd_in, int fd_out)
 {
 
-    if (execute_ast(argv->ast_left_child) == 1)
+    if (execute_ast(argv->ast_left_child, fd_in, fd_out) == 1)
     { // Excecute the left node command
         return 1;
     }
     else
     {
-        if (execute_ast(argv->ast_right_child) == 1)
+        if (execute_ast(argv->ast_right_child, fd_in, fd_out) == 1)
         { // Excecute the right node command
             return 1;
         }
@@ -64,9 +65,9 @@ int and_func(Node *argv,int fd_in,int fd_out)
  * @return int
  */
 
-int semicolon_func(Node *argv,int fd_in,int fd_out)
+int semicolon_func(Node *argv, int fd_in, int fd_out)
 {
-    execute_ast(argv->ast_left_child);  // Excecute the left node command
-    execute_ast(argv->ast_right_child); // Excecute the right node command
+    execute_ast(argv->ast_left_child, fd_in, fd_out);  // Excecute the left node command
+    execute_ast(argv->ast_right_child, fd_in, fd_out); // Excecute the right node command
     return 0;
 }

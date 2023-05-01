@@ -9,7 +9,7 @@
 #include "../auxiliars/list.h"
 #include "operators.h"
 
-list *background_process;
+list *background_process = NULL;
 
 /**
  * @brief This method excecute the & function
@@ -18,14 +18,14 @@ list *background_process;
  * @param argv
  * @return int
  */
-int background_func(Node *argv,int fd_in,int fd_out)
+int background_func(Node *argv, int fd_in, int fd_out)
 {
     pid_t pid;
     pid = fork();
 
     if (pid == 0) // Child process
     {
-        PushEnd(background_process, pid); // Add to the background process list
+        PushEnd(background_process, (void *)&pid); // Add to the background process list
     }
     else if (pid > 0)
     { // Parent process
@@ -54,7 +54,7 @@ int jobs(int argc, char **argv)
     for (int p = 1; p <= background_process->size; p++)
     { // iterates over all possible process IDs
 
-        printf("PID=%d",*(int*)(GetValue(background_process, p)));
+        printf("PID=%d", *(int *)(GetValue(background_process, p)));
     }
     return 0;
 }
@@ -70,15 +70,15 @@ Builtins jobs_struct = {"jobs", jobs};
 int fg(int argc, char **argv)
 {
     int status = 1;
-    int pid = (int)argv[0];
-    if (pid == NULL)
+    int pid = atoi(argv[0]);
+    if (pid == 0)
     { // Do the recent process
         if (background_process->size == 0)
         {
             printf("No background process");
             return 1;
         }
-        pid_t recentProcess = *(int*)(GetValue(background_process, background_process->size - 1));
+        pid_t recentProcess = *(int *)(GetValue(background_process, background_process->size - 1));
         do
         {
             waitpid(recentProcess, &status, WUNTRACED); // wait for the process to finish
@@ -88,7 +88,7 @@ int fg(int argc, char **argv)
 
     else
     {
-        if (*(int*)(GetValue(background_process, pid))== NULL)
+        if (*(int *)(GetValue(background_process, pid)) == 0)
         { // if the process is not in the list
             printf("Process not found");
             return 1;
@@ -117,10 +117,10 @@ void update_background()
     {
         for (int i = 0; i < background_process->size; ++i)
         {
-            waitpid(*(int*)(GetValue(background_process, i)), &status, WNOHANG);
+            waitpid(*(int *)(GetValue(background_process, i)), &status, WNOHANG);
             if (WIFEXITED(status))
             {
-                printf("[%d]\tDone\t%d\n", i + 1, *(int*)(GetValue(background_process, i)));
+                printf("[%d]\tDone\t%d\n", i + 1, *(int *)(GetValue(background_process, i)));
                 DeleteValue(background_process, i);
                 i = -1;
             }
