@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 #include "../REPL/source.h"
 #include "../REPL/shell.h"
@@ -50,6 +51,33 @@ int history(int argc, char **argv)
   fclose(file);
   return 0;
 }
+
+
+int delete_last_input()
+{
+  FILE *file = fopen("history/history.txt", "r+");
+
+  if(!file) return 1;
+
+  /*move file cursor to end*/
+  fseek(file, 0, SEEK_END);
+
+  long size = ftell(file);
+
+  int i =0;
+
+  while(i < size && fgetc(file) != '\n')
+  {
+    fseek(file,-i, SEEK_END);
+    i++;
+  }
+  
+  ftruncate(fileno(file), ftell(file) - 1);
+  fclose(file);
+  return 0;
+  
+}
+
 
 /*Executes the command that occupies the number indicated in the history*/
 int again(int argc, char **argv)
