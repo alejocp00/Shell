@@ -5,7 +5,7 @@
 /*Structure for helping manage the builtins*/
 typedef struct builtins
 {
-    /*builting's name*/
+    /*builtins name*/
     char *builtin_name;
 
     /*function*/
@@ -16,7 +16,10 @@ typedef struct builtins
 extern Builtins builtins[];
 
 /*Amount of builtins*/
-int builtins_count;
+extern int builtins_count;
+
+/*pid of the process to kill*/
+extern main_pid;
 
 /*Help function*/
 int help(int argc, char **argv);
@@ -34,5 +37,17 @@ int again(int argc, char **argv);
 
 /*cd function*/
 int cd(int argc, char **argv);
+
+/*true function. Returns 0*/
+int true_b(int argc, char **argv);
+
+/*false function. Returns 1*/
+int false_b(int argc, char **argv);
+
+/*jobs function*/
+int jobs(int argc, char **argv);
+
+/*fg function*/
+int fg(int argc, char **argv);
 
 #endif

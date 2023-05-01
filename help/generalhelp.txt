@@ -10,11 +10,10 @@ spaces: puede existir cualquier cantidad de espacios entre los comandos y parám
 history: mostrar un historial de comandos (0.5 puntos)
 ctrl+c: posibilidad de al dar ctrl+c se "mate" el proceso que se esta ejecutando (0.5 puntos)
 chain: operadores para encadenar comandos (0.5 puntos)
-if: expresiones condicionales (1 punto)
 help: imprime la ayuda (1 punto)
 
 
-Cantidad de puntos: 5.0
+Cantidad de puntos: 5.5
 
 Built-in:
 cd: permite cambiar de directorio
@@ -23,4 +22,18 @@ history: muestra el historial
 again: ejecuta nuevamente el comando que tiene el numero indicado en el history.
 jobs: lista todos los procesos que están corriendo en el background.
 fg: manda un proceso del background al foreground.
+true: retorna 0.
+false: retorna 1.
 
+Keywords válidas para ejecutar help:
+Si desea acceder a una de las ayudas específicas, a continuación las keywords válidas:
+-background
+-basics
+-chain
+-ctrl+c
+-help
+-history
+-if
+-multiif
+-multipipe
+-variables

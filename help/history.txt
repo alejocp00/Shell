@@ -1,1 +1,14 @@
-(no se ha implementado history)
+**history**
+
+-history
+El history imprime el historial de los últimos 10 comandos que fueron introducidos. Los comandos aparecerán enumerados en correspondencia al orden en que fueron introducidos (el comando más reciente será el número 1).
+
+Se implementó un método 'add_to_history' que se encarga de añadir al archivo del history la línea de comando que se introdujo, justo después de haber sido leída y purgada de espacios en blanco sobrantes.
+
+Para la implementación de dichos métodos se utilizaron las bibliotecas <stdlib.h>, <stdio.h> y <ctype.h>.
+
+-again
+El comando again manda ejecutar nuevamente el comando correspondiente en el historial al número indicado.
+Para su implementación se utilizaron las bibliotecas de C mencionadas anteriormente.
+
+

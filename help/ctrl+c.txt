@@ -1,1 +1,3 @@
-(no se ha implemenado ctrl+c)
+**ctrl+c**
+
+Al presionar 'ctrl+c' el proceso actual que se está ejecutando debe detenerse.

@@ -34,6 +34,9 @@ Ejemplo: c1 >> c2
 
 Añade al texto del archivo de c2 el contenido de c1. Aquí se utilizan los siguientes Flagas: O_WRONLY, O_CREAT, O_APPEND.
 
+-caracter |
+El operador | permite redirigir la salida de un comando hacia la entrada de otro.
+
 -caracter #:
 a partir de donde aparezca dicho caracter se ignora todo lo que viene detrás.
 

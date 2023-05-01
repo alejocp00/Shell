@@ -4,6 +4,7 @@
 #include "shell.h"
 #include "ast.h"
 #include "executor.h"
+#include "built-ins/builtins.h"
 
 void print_prompt()
 {
@@ -15,6 +16,8 @@ int parse_and_execute(Source *src)
     /*Skipping starting blanks*/
     skip_blanks(src);
     
+    /*Adding the command to the history*/
+    add_to_history(src->in_text);
 
     Token *tok = tokenize(src);
     if (tok == &EOF_token)
