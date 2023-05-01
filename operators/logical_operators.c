@@ -4,7 +4,7 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <sys/types.h>
-#include "builtins.h"
+#include "../built-ins/builtins.h"
 #include "../REPL/node.h"
 #include "../auxiliars/list.h"
 #include "operators.h"

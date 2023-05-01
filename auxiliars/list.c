@@ -12,19 +12,19 @@ list *NewList()
 
 void PushEnd(list *linkedList, void *element)
 {
-    //Nuevo nodo que se va a annadir al final de la lista
-    node *newNode = (node *)(malloc(sizeof(node)));
+    // Nuevo nodo que se va a annadir al final de la lista
+    Node_list *newNode = (Node_list *)(malloc(sizeof(Node_list)));
     newNode->next = NULL;
     newNode->value = element;
 
-    //Si la lista esta vacia el nodo pasa a ser primero y ultimo elemento de la lista
+    // Si la lista esta vacia el nodo pasa a ser primero y ultimo elemento de la lista
     if (linkedList->size == 0)
     {
         linkedList->first = newNode;
         linkedList->last = newNode;
         linkedList->first->previous = NULL;
     }
-    else //Si la lista no esta vacia
+    else // Si la lista no esta vacia
     {
         newNode->previous = linkedList->last;
         linkedList->last->next = newNode;
@@ -35,12 +35,12 @@ void PushEnd(list *linkedList, void *element)
 
 void PushBeg(list *linkedList, void *element)
 {
-    //Nuevo nodo que se va a annadir al inicio de la lista
-    node *newNode = (node *)(malloc(sizeof(node)));
+    // Nuevo nodo que se va a annadir al inicio de la lista
+    Node_list *newNode = (Node_list *)(malloc(sizeof(Node_list)));
     newNode->value = element;
     linkedList->first->previous = NULL;
 
-    //Si la lista esta vacia
+    // Si la lista esta vacia
     if (linkedList->size == 0)
     {
         linkedList->first = newNode;
@@ -63,7 +63,7 @@ void DeleteEnd(list *linkedList)
         return;
     }
 
-    node *nodeRemoved = linkedList->last;
+    Node_list *nodeRemoved = linkedList->last;
 
     if (linkedList->size == 1)
     {
@@ -89,7 +89,7 @@ void DeleteBeg(list *linkedList)
         return;
     }
 
-    node *nodeRemoved = linkedList->first;
+    Node_list *nodeRemoved = linkedList->first;
 
     if (linkedList->size == 1)
     {
@@ -121,7 +121,7 @@ void *GetValue(list *linkedList, int index)
     if (index == linkedList->size - 1)
         return linkedList->last->value;
 
-    node *currentNode = linkedList->first;
+    Node_list *currentNode = linkedList->first;
 
     int i = 0;
 
@@ -152,7 +152,7 @@ void DeleteValue(list *linkedList, int index)
         return;
     }
 
-    node *currentNode = linkedList->first;
+    Node_list *currentNode = linkedList->first;
 
     if (linkedList->size == 1)
     {
