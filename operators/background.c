@@ -21,10 +21,9 @@ int background_func(Node *argv)
 {
     pid_t pid;
     pid = fork();
-    PushEnd(background_process, pid); // inserting the pid in the array
 
-    if (pid == 0)
-    { // Child process
+    if (pid == 0)// Child process
+    { 
         // exit();
     }
     else if (pid > 0)
