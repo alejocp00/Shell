@@ -16,7 +16,7 @@ typedef struct builtins
 extern Builtins builtins[];
 
 /*Amount of builtins*/
-int builtins_count;
+extern int builtins_count;
 
 /*Help function*/
 int help(int argc, char **argv);
@@ -36,9 +36,15 @@ int again(int argc, char **argv);
 int cd(int argc, char **argv);
 
 /*true function. Returns 0*/
-int true(int argc, char **argv);
+int true_b(int argc, char **argv);
 
 /*false function. Returns 1*/
-int false(int argc, char **argv);
+int false_b(int argc, char **argv);
+
+/*jobs function*/
+int jobs(int argc, char **argv);
+
+/*fg function*/
+int fg(int argc, char **argv);
 
 #endif

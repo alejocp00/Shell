@@ -46,7 +46,7 @@ int background_func(Node *argv)
  * @param argv
  * @return int
  */
-int jobs(Node *argv)
+int jobs(int argc, char **argv)
 {
     pid_t pid = getpid();
     printf("Background processes:\n");
@@ -58,7 +58,6 @@ int jobs(Node *argv)
     }
     return 0;
 }
-Builtins jobs_struct = {"jobs", jobs};
 
 /**
  * @brief This method excecute the fg function
@@ -67,9 +66,10 @@ Builtins jobs_struct = {"jobs", jobs};
  * @param argv
  * @return int
  */
-int fg(int pid)
+int fg(int argc, char **argv)
 {
     int status = 1;
+    int pid = (int)argv[0];
     if (pid == NULL)
     { // Do the recent process
         if (background_process->size == 0)
