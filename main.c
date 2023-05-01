@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "structs.h"
-#include "shell.h"
+#include "./auxiliars/structs.h"
+#include "./REPL/shell.h"
 
 char *current_path = NULL;
 

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <errno.h>
 #include "node.h"
-#include "auxiliars/structs.h"
+#include "../auxiliars/structs.h"
 
 /*Create a new node of the type indicated*/
 Node *new_node(Node_Type type)

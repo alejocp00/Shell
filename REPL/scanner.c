@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "scanner.h"
-#include "auxiliars/structs.h"
+#include "../auxiliars/structs.h"
 
 /*Indicates the end of the input*/
 Token EOF_token = {

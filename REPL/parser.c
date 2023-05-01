@@ -1,6 +1,6 @@
 #include <unistd.h>
+#include <string.h>
 #include "parser.h"
-#include "string.h"
 
 char *operators = "&;|<>";
 

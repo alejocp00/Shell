@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "source.h"
-#include "shell.h"
+#include "../REPL/source.h"
+#include "../REPL/shell.h"
 
 /*Add to the history file the command*/
 int add_to_history(char *command)
@@ -64,7 +64,7 @@ int again(int argc, char **argv)
      return 1;
    }*/
 
-  int line_number = s;
+  int line_number = atoi(s);
 
   if (line_number <= 0)
     return 1;
