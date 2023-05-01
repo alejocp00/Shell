@@ -13,13 +13,10 @@ typedef struct builtins
 } Builtins;
 
 /*Array as storage of all the builtins*/
-extern Builtins builtins[];
+extern Builtins builtins_array[];
 
 /*Amount of builtins*/
 extern int builtins_count;
-
-/*pid of the process to kill*/
-extern main_pid;
 
 /*Help function*/
 int help(int argc, char **argv);
@@ -49,5 +46,8 @@ int jobs(int argc, char **argv);
 
 /*fg function*/
 int fg(int argc, char **argv);
+
+/*exit function*/
+int exit_b(int argc, char **argv);
 
 #endif
