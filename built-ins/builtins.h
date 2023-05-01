@@ -18,6 +18,8 @@ extern Builtins builtins_array[];
 /*Amount of builtins*/
 extern int builtins_count;
 
+extern int shell_pid;
+
 /*Help function*/
 int help(int argc, char **argv);
 

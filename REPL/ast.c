@@ -31,7 +31,7 @@ DataNode *new_data_node(Node *value)
  * @param stack The stack
  * @param value The value of the node
  */
-void push(DataNode *stack, Node *value)
+void push(DataNode **stack, Node *value)
 {
     DataNode *node = new_data_node(value);
     if (!node)
@@ -43,9 +43,9 @@ void push(DataNode *stack, Node *value)
         return;
     }
 
-    DataNode *aux = stack;
-    stack = node;
-    stack->next = aux;
+    DataNode *aux = *stack;
+    *stack = node;
+    (*stack)->next = aux;
 }
 
 /**
@@ -157,7 +157,7 @@ void *shunting_yard(DataNode *operations)
                     while (operator_stack->value != NULL)
                         enqueue(output_queue, pop(&operator_stack));
                 // Add the operator to the stack
-                push(operator_stack, current_node);
+                push(&operator_stack, current_node);
             }
         }
         current_node = dequeue(&operations);
@@ -211,7 +211,7 @@ Node *build_ast(DataNode *shunting_yard_result)
             }
             else
             {
-                push(command_stack, current_node);
+                push(&command_stack, current_node);
                 command_stack_size++;
             }
         }
@@ -226,9 +226,10 @@ Node *build_ast(DataNode *shunting_yard_result)
 
                 set_tree_values(current_node, left_child, right_child);
 
-                push(operator_stack, current_node);
+                push(&operator_stack, current_node);
                 command_stack_size--;
                 command_stack_size--;
+                operator_stack_size++;
             }
             else if (command_stack_size == 1)
             {
@@ -237,8 +238,7 @@ Node *build_ast(DataNode *shunting_yard_result)
 
                 set_tree_values(current_node, left_child, right_child);
 
-                push(operator_stack, current_node);
-                command_stack_size--;
+                push(&operator_stack, current_node);
             }
             else
             {
@@ -247,7 +247,7 @@ Node *build_ast(DataNode *shunting_yard_result)
 
                 set_tree_values(current_node, left_child, right_child);
 
-                push(operator_stack, current_node);
+                push(&operator_stack, current_node);
                 command_stack_size--;
             }
         }
@@ -256,4 +256,34 @@ Node *build_ast(DataNode *shunting_yard_result)
     if (operator_stack_size == 0)
         return pop(&command_stack);
     return pop(&operator_stack);
+}
+
+/**
+ * @brief Free the AST
+ *
+ * @param ast The AST
+ */
+void free_ast(Node *ast)
+{
+    if (!ast)
+    {
+        return;
+    }
+    if (ast->first_child)
+    {
+        free_ast(ast->first_child);
+    }
+    if (ast->next_sibling)
+    {
+        free_ast(ast->next_sibling);
+    }
+    if (ast->ast_right_child)
+    {
+        free_ast(ast->ast_right_child);
+    }
+    if (ast->ast_left_child)
+    {
+        free_ast(ast->ast_left_child);
+    }
+    free(ast);
 }

@@ -19,6 +19,9 @@ extern int shell_pid;
 /*The current path*/
 extern char *current_path;
 
+/*Commands in history.txt*/
+extern int history_size;
+
 /**
  * @brief Print the prompt
  *
@@ -39,5 +42,12 @@ char *read_cmd();
  * @return int Return 0 if success, 1 if fail
  */
 int parse_and_execute(Source *src);
+
+/**
+ * @brief Count the number of lines in the history file
+ *
+ * @return int  The number of lines
+ */
+int init_history_size();
 
 #endif

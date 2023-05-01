@@ -5,40 +5,26 @@
 #include "../REPL/source.h"
 #include "../REPL/shell.h"
 
+#define HISTORY_PATH "./history/history.txt"
+
 int add_to_history(char *command)
 {
-  FILE *file = fopen("aux.txt", "r+");
+  FILE *file = fopen(HISTORY_PATH, "a");
   if (!file)
     return 1;
 
-  /*Puts the cursor at the begining of the file*/
-  fseek(file, 0, SEEK_SET);
-
-  /*Storage the original data in a temporal variable*/
-  char buffer[10000];
-  size_t len = fread(buffer, 1, sizeof(buffer), file);
-
-  /*Puts the cursosr at the begining of the file*/
-  fseek(file, 0, SEEK_SET);
-
-  char *command_n[strlen(command)+2];
-  strcpy(command_n, command);
-  strcat(command_n, "\n");
-
-  /*Write the command at the begining of the file*/
-  fputs(command_n, file);
-
-  /*Write the original data after*/
-  fwrite(buffer, 1, len, file);
+  fputs(command, file);
 
   fclose(file);
+  history_size++;
   return 0;
 }
-
 
 /*prints 10 last commands*/
 int history(int argc, char **argv)
 {
+  int read_size = 1030;
+
   /*count of the lines*/
   int count = 0;
 
@@ -46,9 +32,9 @@ int history(int argc, char **argv)
   int max_lines = 10;
 
   /*stores the string of each line to read*/
-  char text_string[1030];
+  char text_string[read_size];
 
-  FILE *file = fopen("aux.txt", "r");
+  FILE *file = fopen(HISTORY_PATH, "r");
 
   if (!file)
     return 1;
@@ -56,13 +42,21 @@ int history(int argc, char **argv)
   /*puts the cursor at the beginning of the file*/
   rewind(file);
 
-  while (count < max_lines)
-  {
-    /*takes the corresponding line and stores it in the text_string variable*/
-    fgets(text_string, 1030, file);
+  int start_line = history_size - max_lines;
 
-    printf("%d %s\n", count + 1, text_string);
+  if (start_line < 0)
+    start_line = 0;
+
+  while (count < start_line && fgets(text_string, 1030, file))
+  {
     count++;
+  }
+
+  count = 0;
+  /*takes the corresponding line and stores it in the text_string variable*/
+  while (fgets(text_string, 1030, file))
+  {
+    printf("%d %s\n", ++count, text_string);
   }
   fclose(file);
   return 0;
@@ -72,7 +66,7 @@ int history(int argc, char **argv)
 int again(int argc, char **argv)
 {
   /*store the number of the command selected*/
-  char *s = argv[0];
+  char *s = argv[1];
   /*store the command selected*/
   char *command;
 
@@ -88,7 +82,7 @@ int again(int argc, char **argv)
 
   int count = 0;
   char text_string[1030];
-  FILE *file = fopen("aux.txt", "a+");
+  FILE *file = fopen("./history/history.txt", "a+");
 
   /*Verify if the file was opened*/
   if (!file)

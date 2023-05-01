@@ -160,7 +160,7 @@ int do_simple_command(Node *node, int fd_in, int fd_out)
             if (fd_out != -1)
                 close(fd_out);
 
-            return builtins_array[0].function(argc, argv);
+            return builtins_array[i].function(argc, argv);
         }
     }
     if ((child_pid = fork()) == 0)
@@ -261,6 +261,23 @@ int get_params(Node *child, int *argc, char **argv)
     return 1;
 }
 
+int same_string(char a[], char b[])
+{
+    if (strlen(a) != strlen(b))
+        return 0;
+
+    bool flag = true;
+    for (int i = 0; a[i] != '\0'; ++i)
+    {
+        if (a[i] != b[i])
+        {
+            flag = false;
+            break;
+        }
+    }
+    return (int)flag;
+}
+
 int execute_ast(Node *ast, int fd_in, int fd_out)
 {
     /*Init variables*/
@@ -274,47 +291,49 @@ int execute_ast(Node *ast, int fd_in, int fd_out)
         return do_simple_command(ast, fd_in, fd_out);
     }
 
+    char *value = strcat(ast->first_child->value.str, "\0");
+
     if (ast->type == NODE_OPERATOR)
     {
-        if (strcmp(ast->value.str, "&") == 0)
+        if (same_string(value, "&"))
         {
             /*Background*/
-            return background_func(ast);
+            return background_func(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, ";") == 0)
+        else if (same_string(value, ";"))
         {
             /*Sequential*/
-            return union_func(ast);
+            return semicolon_func(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, "&&"))
+        else if (same_string(value, "&&"))
         {
             /*And*/
-            return and_func(ast);
+            return and_func(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, "||") == 0)
+        else if (same_string(value, "||"))
         {
             /*Or*/
-            return or_func(ast);
+            return or_func(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, ">") == 0)
+        else if (same_string(value, ">"))
         {
             /*Output*/
-            return retofile(ast);
+            return retofile(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, ">>") == 0)
+        else if (same_string(value, ">>"))
         {
             /*Append*/
-            return retofileap(ast);
+            return retofileap(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, "|") == 0)
+        else if (same_string(value, "|"))
         {
             /*Pipe*/
-            return pipes(ast);
+            return pipes(ast, fd_in, fd_out);
         }
-        else if (strcmp(ast->value.str, "<") == 0)
+        else if (same_string(value, "<"))
         {
             /*Input*/
-            return refromfile(ast);
+            return refromfile(ast, fd_in, fd_out);
         }
         else
         {

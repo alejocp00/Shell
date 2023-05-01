@@ -7,6 +7,6 @@
 
 int exit_b(int argc, char **argv)
 {
-    exit(EXIT_SUCCESS);
+    kill(getpid(), SIGKILL);
     return 0;
 }

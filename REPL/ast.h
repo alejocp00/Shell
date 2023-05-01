@@ -29,7 +29,7 @@ DataNode *new_data_node(Node *value);
  * @param stack The stack
  * @param value The value of the node
  */
-void push(DataNode *stack, Node *value);
+void push(DataNode **stack, Node *value);
 
 /**
  * @brief Remove the first node of the queue
@@ -70,5 +70,12 @@ Node *dequeue(DataNode **queue);
 void *shunting_yard(DataNode *operations);
 
 Node *build_ast(DataNode *shunting_yard_result);
+
+/**
+ * @brief Free the AST
+ *
+ * @param ast The AST
+ */
+void free_ast(Node *ast);
 
 #endif
