@@ -5,20 +5,36 @@
 #include "../REPL/source.h"
 #include "../REPL/shell.h"
 
-/*Add to the history file the command*/
 int add_to_history(char *command)
 {
-  FILE *file = fopen("history/history.txt", "a");
-
+  FILE *file = fopen("aux.txt", "r+");
   if (!file)
     return 1;
 
-  /*puts the cursor at the beginning of the file*/
-  rewind(file);
+  /*Puts the cursor at the begining of the file*/
+  fseek(file, 0, SEEK_SET);
 
-  fputs(command, file);
+  /*Storage the original data in a temporal variable*/
+  char buffer[10000];
+  size_t len = fread(buffer, 1, sizeof(buffer), file);
+
+  /*Puts the cursosr at the begining of the file*/
+  fseek(file, 0, SEEK_SET);
+
+  char *command_n[strlen(command)+2];
+  strcpy(command_n, command);
+  strcat(command_n, "\n");
+
+  /*Write the command at the begining of the file*/
+  fputs(command_n, file);
+
+  /*Write the original data after*/
+  fwrite(buffer, 1, len, file);
+
+  fclose(file);
   return 0;
 }
+
 
 /*prints 10 last commands*/
 int history(int argc, char **argv)
@@ -51,33 +67,6 @@ int history(int argc, char **argv)
   fclose(file);
   return 0;
 }
-
-
-int delete_last_input()
-{
-  FILE *file = fopen("history/history.txt", "r+");
-
-  if(!file) return 1;
-
-  /*move file cursor to end*/
-  fseek(file, 0, SEEK_END);
-
-  long size = ftell(file);
-
-  int i =0;
-
-  while(i < size && fgetc(file) != '\n')
-  {
-    fseek(file,-i, SEEK_END);
-    i++;
-  }
-  
-  ftruncate(fileno(file), ftell(file) - 1);
-  fclose(file);
-  return 0;
-  
-}
-
 
 /*Executes the command that occupies the number indicated in the history*/
 int again(int argc, char **argv)
